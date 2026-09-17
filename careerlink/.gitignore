@@ -1,0 +1,14 @@
+.env
+.env.*
+!.env.example
+target/
+*.jar
+*.class
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.log
+.DS_Store
+.tools/
+.run-logs/
+.run-pids/

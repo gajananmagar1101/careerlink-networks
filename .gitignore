@@ -1,0 +1,31 @@
+# Secrets and Environment Variables
+.env
+.env.*
+*.env
+!.env.example
+client_secret*.json
+
+# Node & Frontend
+**/node_modules/
+**/dist/
+**/dist-ssr/
+**/*.tsbuildinfo
+
+# Java & Backend
+**/target/
+**/*.class
+**/*.jar
+**/*.war
+.tools/
+.run-logs/
+.run-pids/
+*.log
+
+# IDE & OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+*.swo

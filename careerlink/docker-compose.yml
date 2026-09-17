@@ -1,0 +1,83 @@
+services:
+  eureka-server:
+    build:
+      context: .
+      dockerfile: eureka-server/Dockerfile
+    ports:
+      - "${EUREKA_PORT:-8761}:8761"
+    environment:
+      EUREKA_PORT: 8761
+
+  auth-service:
+    build:
+      context: .
+      dockerfile: auth-service/Dockerfile
+    ports:
+      - "${AUTH_SERVICE_PORT:-8081}:8081"
+    environment:
+      AUTH_SERVICE_PORT: 8081
+      MONGODB_URI: ${MONGODB_URI}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-86400000}
+      EUREKA_DEFAULT_ZONE: http://eureka-server:8761/eureka/
+    depends_on:
+      - eureka-server
+
+  profile-service:
+    build:
+      context: .
+      dockerfile: profile-service/Dockerfile
+    ports:
+      - "${PROFILE_SERVICE_PORT:-8082}:8082"
+    environment:
+      PROFILE_SERVICE_PORT: 8082
+      MONGODB_URI: ${MONGODB_URI}
+      EUREKA_DEFAULT_ZONE: http://eureka-server:8761/eureka/
+    depends_on:
+      - eureka-server
+
+  job-service:
+    build:
+      context: .
+      dockerfile: job-service/Dockerfile
+    ports:
+      - "${JOB_SERVICE_PORT:-8083}:8083"
+    environment:
+      JOB_SERVICE_PORT: 8083
+      MONGODB_URI: ${MONGODB_URI}
+      EUREKA_DEFAULT_ZONE: http://eureka-server:8761/eureka/
+    depends_on:
+      - eureka-server
+
+  application-service:
+    build:
+      context: .
+      dockerfile: application-service/Dockerfile
+    ports:
+      - "${APPLICATION_SERVICE_PORT:-8084}:8084"
+    environment:
+      APPLICATION_SERVICE_PORT: 8084
+      MONGODB_URI: ${MONGODB_URI}
+      EUREKA_DEFAULT_ZONE: http://eureka-server:8761/eureka/
+    depends_on:
+      - eureka-server
+      - job-service
+      - profile-service
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: api-gateway/Dockerfile
+    ports:
+      - "${GATEWAY_PORT:-8080}:8080"
+    environment:
+      GATEWAY_PORT: 8080
+      JWT_SECRET: ${JWT_SECRET}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:3000,http://localhost:5173,http://localhost:4200}
+      EUREKA_DEFAULT_ZONE: http://eureka-server:8761/eureka/
+    depends_on:
+      - eureka-server
+      - auth-service
+      - profile-service
+      - job-service
+      - application-service

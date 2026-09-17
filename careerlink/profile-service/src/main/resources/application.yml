@@ -1,0 +1,20 @@
+server:
+  port: ${PROFILE_SERVICE_PORT:8082}
+spring:
+  application:
+    name: profile-service
+  data:
+    mongodb:
+      uri: ${PROFILE_MONGODB_URI:${MONGODB_URI:mongodb://localhost:27017/careerlink_profile}}
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_DEFAULT_ZONE:http://localhost:8761/eureka/}
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

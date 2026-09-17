@@ -1,0 +1,44 @@
+server:
+  port: ${GATEWAY_PORT:8080}
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: auth-service
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/api/auth/**
+        - id: profile-service
+          uri: lb://PROFILE-SERVICE
+          predicates:
+            - Path=/api/profiles/**
+        - id: job-service
+          uri: lb://JOB-SERVICE
+          predicates:
+            - Path=/api/jobs/**
+        - id: application-service
+          uri: lb://APPLICATION-SERVICE
+          predicates:
+            - Path=/api/applications/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_DEFAULT_ZONE:http://localhost:8761/eureka/}
+
+security:
+  jwt:
+    secret: ${JWT_SECRET}
+
+app:
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:5173,http://localhost:4200}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
