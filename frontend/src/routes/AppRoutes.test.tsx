@@ -22,13 +22,13 @@ function renderApp(route: string) {
 }
 
 describe('AppRoutes', () => {
-  it('renders the landing page', () => {
+  it('renders the landing page', async () => {
     renderApp('/');
-    expect(screen.getByRole('heading', { name: /find work that moves your career forward/i })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /find work that moves your career forward/i })).toBeInTheDocument();
   });
 
-  it('redirects protected candidate routes to login', () => {
+  it('redirects protected candidate routes to login', async () => {
     renderApp('/candidate/dashboard');
-    expect(screen.getByRole('heading', { name: /welcome back/i })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /welcome back/i })).toBeInTheDocument();
   });
 });

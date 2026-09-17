@@ -7,10 +7,13 @@ import { Card } from '../../components/ui/Card';
 import { EmptyState, ErrorState, LoadingSkeleton } from '../../components/ui/Feedback';
 import { ProgressBar } from '../../components/ui/ProgressBar';
 import { StatCard } from '../../components/ui/StatCard';
+import { StatusBadge } from '../../components/ui/StatusBadge';
 import { useAuth } from '../../context/AuthContext';
 import { useCandidateApplications } from '../../hooks/useApplications';
 import { useJobs } from '../../hooks/useJobs';
 import { useCandidateProfile } from '../../hooks/useProfiles';
+import { appliedDate } from '../../utils/applications';
+import { formatDate } from '../../utils/format';
 
 export function CandidateDashboard() {
   const { user } = useAuth();
@@ -99,17 +102,52 @@ export function CandidateDashboard() {
                 </Link>
               ))}
             </div>
-            <Link to="/candidate/profile"><Button variant="secondary" className="mt-5 w-full">Improve profile</Button></Link>
+            <Link to="/candidate/profile">
+              <Button variant="secondary" className="mt-5 w-full">
+                {completion === 100 ? 'View profile' : 'Improve profile'}
+              </Button>
+            </Link>
           </Card>
           <Card>
-            <h2 className="font-extrabold">Recent applications</h2>
+            <div className="flex items-center justify-between">
+              <h2 className="font-extrabold">Recent applications</h2>
+              <Link className="text-sm font-bold text-brand-700 hover:underline" to="/candidate/applications">
+                View all
+              </Link>
+            </div>
             {applicationsQuery.isLoading ? (
               <LoadingSkeleton rows={2} />
             ) : applicationsQuery.isError ? (
               <ErrorState message="We couldn't load your applications." onRetry={() => void applicationsQuery.refetch()} />
             ) : applications.length ? (
               <div className="mt-4 space-y-3">
-                {applications.slice(0, 2).map((item) => <ApplicationCard key={item.id} application={item} />)}
+                {applications.slice(0, 3).map((item) => (
+                  <div
+                    key={item.id}
+                    className="rounded-lg border border-line bg-slate-50/50 p-3.5 transition hover:bg-slate-50"
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-xs font-bold uppercase tracking-wider text-brand-700">
+                          {item.job?.companyName ?? 'Hiring team'}
+                        </p>
+                        <h3 className="mt-0.5 truncate text-sm font-bold text-ink">
+                          {item.job?.title ?? 'Role'}
+                        </h3>
+                      </div>
+                      <StatusBadge status={item.status} />
+                    </div>
+                    <div className="mt-2.5 flex items-center justify-between border-t border-line/60 pt-2 text-xs text-muted">
+                      <span>Applied {formatDate(appliedDate(item))}</span>
+                      <Link
+                        to={`/candidate/applications/${item.id}`}
+                        className="font-bold text-brand-700 hover:underline"
+                      >
+                        Track →
+                      </Link>
+                    </div>
+                  </div>
+                ))}
               </div>
             ) : (
               <EmptyState title="No applications yet" description="Apply to roles and track them here." action={<Link to="/candidate/jobs"><Button variant="secondary">Explore Jobs</Button></Link>} />

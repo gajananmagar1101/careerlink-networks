@@ -51,9 +51,9 @@ describe('Job Components', () => {
       expect(screen.getByText(/₹10L/)).toBeInTheDocument();
     });
 
-    it('renders View Job button', () => {
+    it('renders View details button', () => {
       renderComponent(<JobCard job={mockJob} to="/candidate/jobs/test-job-1" />);
-      expect(screen.getByText('View Job')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /view details/i })).toBeInTheDocument();
     });
   });
 });

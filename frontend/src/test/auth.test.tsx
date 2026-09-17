@@ -23,50 +23,51 @@ function renderApp(route: string) {
 
 describe('Auth Pages', () => {
   describe('LoginPage', () => {
-    it('renders the login form with heading and button', () => {
+    it('renders the login form with heading and button', async () => {
       renderApp('/login');
-      expect(screen.getByRole('heading', { name: /welcome back/i })).toBeInTheDocument();
+      expect(await screen.findByRole('heading', { name: /welcome back/i })).toBeInTheDocument();
       expect(screen.getByText('Email')).toBeInTheDocument();
       expect(screen.getByText('Password')).toBeInTheDocument();
       expect(screen.getByRole('button', { name: /sign in/i })).toBeInTheDocument();
     });
 
-    it('renders sign up link', () => {
+    it('renders sign up link', async () => {
       renderApp('/login');
-      expect(screen.getByText(/don't have an account/i)).toBeInTheDocument();
+      expect(await screen.findByText(/don't have an account/i)).toBeInTheDocument();
       expect(screen.getByText('Create account')).toBeInTheDocument();
     });
   });
 
   describe('RegisterPage', () => {
-    it('renders the registration heading with role selection', () => {
+    it('renders the registration heading with role selection', async () => {
       renderApp('/register');
-      expect(screen.getByRole('heading', { name: /create your careerlink account/i })).toBeInTheDocument();
+      expect(await screen.findByRole('heading', { name: /create your careerlink account/i })).toBeInTheDocument();
       expect(screen.getByText(/tell us how you plan to use careerlink/i)).toBeInTheDocument();
     });
 
-    it('renders role selection', () => {
+    it('renders role selection', async () => {
       renderApp('/register');
-      expect(screen.getByRole('button', { name: /job seeker/i })).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: /recruiter/i })).toBeInTheDocument();
+      expect(await screen.findByRole('button', { name: /job seeker/i })).toBeInTheDocument();
+      expect(await screen.findByRole('button', { name: /^recruiter\b/i })).toBeInTheDocument();
     });
 
-    it('shows the registration form after choosing a role', () => {
+    it('shows the registration form after choosing a role', async () => {
       renderApp('/register');
-      fireEvent.click(screen.getByRole('button', { name: /job seeker/i }));
-      expect(screen.getByText('Full name')).toBeInTheDocument();
+      const jobSeekerBtn = await screen.findByRole('button', { name: /job seeker/i });
+      fireEvent.click(jobSeekerBtn);
+      expect(await screen.findByText('Full name')).toBeInTheDocument();
     });
   });
 
   describe('Protected Routes', () => {
-    it('redirects unauthenticated users to /login from candidate routes', () => {
+    it('redirects unauthenticated users to /login from candidate routes', async () => {
       renderApp('/candidate/dashboard');
-      expect(screen.getByRole('heading', { name: /welcome back/i })).toBeInTheDocument();
+      expect(await screen.findByRole('heading', { name: /welcome back/i })).toBeInTheDocument();
     });
 
-    it('redirects unauthenticated users to /login from recruiter routes', () => {
+    it('redirects unauthenticated users to /login from recruiter routes', async () => {
       renderApp('/recruiter/dashboard');
-      expect(screen.getByRole('heading', { name: /welcome back/i })).toBeInTheDocument();
+      expect(await screen.findByRole('heading', { name: /welcome back/i })).toBeInTheDocument();
     });
   });
 });

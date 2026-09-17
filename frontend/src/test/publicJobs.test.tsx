@@ -3,6 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter } from 'react-router-dom';
 import { ToastProvider } from '../context/ToastContext';
+import { AuthProvider } from '../context/AuthContext';
 import { PublicJobsPage } from '../pages/public/PublicJobsPage';
 import { CandidateJobsPage } from '../pages/candidate/CandidateJobsPage';
 import { apiClient } from '../api/apiClient';
@@ -17,7 +18,9 @@ function renderPage(ui: React.ReactElement, route: string) {
   return render(
     <QueryClientProvider client={client}>
       <MemoryRouter initialEntries={[route]}>
-        <ToastProvider>{ui}</ToastProvider>
+        <AuthProvider>
+          <ToastProvider>{ui}</ToastProvider>
+        </AuthProvider>
       </MemoryRouter>
     </QueryClientProvider>
   );
