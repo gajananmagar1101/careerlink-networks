@@ -49,18 +49,42 @@ export function RecruiterJobsPage() {
           <div className="space-y-4">
             {jobs.map((job) => (
               <Card key={job.id}>
-                <div className="grid gap-4 lg:grid-cols-[1fr_130px_120px_220px] lg:items-center">
-                  <div>
-                    <h2 className="text-lg font-extrabold">{job.title}</h2>
-                    <p className="mt-1 text-sm text-muted">{job.location} • {employmentLabel(job.employmentType)}</p>
+                <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-center gap-2.5">
+                      <h2 className="text-lg font-extrabold text-slate-900">{job.title}</h2>
+                      <StatusBadge status={job.status} />
+                    </div>
+                    <p className="mt-1 text-sm text-muted">
+                      {job.location} • {employmentLabel(job.employmentType)}
+                      {job.applicationDeadline ? ` • Deadline ${formatDate(job.applicationDeadline)}` : ''}
+                    </p>
                   </div>
-                  <StatusBadge status={job.status} />
-                  <p className="text-sm text-muted">Deadline {formatDate(job.applicationDeadline)}</p>
-                  <div className="flex gap-2">
-                    <Link to={`/recruiter/jobs/${job.id}/applications`}><Button variant="secondary">View Applications</Button></Link>
-                    <Link to={`/recruiter/jobs/${job.id}`}><Button variant="secondary" aria-label="View job"><Eye className="h-4 w-4" /></Button></Link>
-                    <Link to={`/recruiter/jobs/${job.id}/edit`}><Button variant="secondary" aria-label="Edit job"><Edit3 className="h-4 w-4" /></Button></Link>
-                    <Button variant="danger" aria-label="Delete job" onClick={() => setPendingDelete(job)}><Trash2 className="h-4 w-4" /></Button>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Link to={`/recruiter/jobs/${job.id}/applications`}>
+                      <Button variant="secondary" className="whitespace-nowrap text-xs font-semibold">
+                        View Applications
+                      </Button>
+                    </Link>
+                    <Link to={`/recruiter/jobs/${job.id}`}>
+                      <Button variant="secondary" className="px-2.5" aria-label="View job" title="View job">
+                        <Eye className="h-4 w-4" />
+                      </Button>
+                    </Link>
+                    <Link to={`/recruiter/jobs/${job.id}/edit`}>
+                      <Button variant="secondary" className="px-2.5" aria-label="Edit job" title="Edit job">
+                        <Edit3 className="h-4 w-4" />
+                      </Button>
+                    </Link>
+                    <Button
+                      variant="danger"
+                      className="px-2.5"
+                      aria-label="Delete job"
+                      title="Delete job"
+                      onClick={() => setPendingDelete(job)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
                   </div>
                 </div>
               </Card>
