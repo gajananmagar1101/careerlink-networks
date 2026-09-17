@@ -1,5 +1,5 @@
-import { LogOut, Menu, X } from 'lucide-react';
-import { useState } from 'react';
+import { ChevronDown, LayoutDashboard, LogOut, Menu, User as UserIcon, X } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { Logo } from './ui/Logo';
 import { useAuth } from '../context/AuthContext';
@@ -30,6 +30,8 @@ const recruiterLinks = [
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
   const { user, isAuthenticated, dashboardPath, logout } = useAuth();
   const { notify } = useToast();
   const location = useLocation();
@@ -37,6 +39,20 @@ export function Navbar() {
 
   const roleLinks = user?.role === 'RECRUITER' ? recruiterLinks : candidateLinks;
   const links = isAuthenticated ? roleLinks : publicLinks;
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+        setUserMenuOpen(false);
+      }
+    }
+    if (userMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [userMenuOpen]);
 
   function goHash(hash: string) {
     setOpen(false);
@@ -48,6 +64,8 @@ export function Navbar() {
   }
 
   function handleLogout() {
+    setUserMenuOpen(false);
+    setOpen(false);
     logout();
     notify('You have been signed out.', 'info');
   }
@@ -76,16 +94,68 @@ export function Navbar() {
         </div>
         <div className="hidden items-center gap-3 md:flex">
           {isAuthenticated && user ? (
-            <>
-              <Link to={dashboardPath} className="inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-semibold text-ink hover:bg-slate-100">
+            <div className="relative" ref={userMenuRef}>
+              <button
+                type="button"
+                onClick={() => setUserMenuOpen((prev) => !prev)}
+                className="inline-flex items-center gap-2 rounded-lg p-1.5 pr-2.5 text-sm font-semibold text-ink hover:bg-slate-100 transition focus:outline-none focus:ring-2 focus:ring-brand-500/20"
+                aria-expanded={userMenuOpen}
+                aria-haspopup="true"
+                aria-label="User menu"
+              >
                 <Avatar name={user.name} />
-                <span className="max-w-[140px] truncate">{user.name}</span>
-              </Link>
-              <Button variant="ghost" onClick={handleLogout}>
-                <LogOut className="h-4 w-4" />
-                Logout
-              </Button>
-            </>
+                <span className="max-w-[140px] truncate text-slate-800 font-bold">{user.name}</span>
+                <ChevronDown className={`h-4 w-4 text-slate-400 transition-transform duration-200 ${userMenuOpen ? 'rotate-180 text-brand-600' : ''}`} />
+              </button>
+
+              {userMenuOpen && (
+                <div className="absolute right-0 top-full mt-2 w-64 rounded-xl border border-line bg-white p-2 shadow-xl z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                  <div className="flex items-center gap-3 px-3 py-2.5 bg-slate-50 rounded-lg border border-slate-100">
+                    <Avatar name={user.name} />
+                    <div className="min-w-0 flex-1">
+                      <p className="font-extrabold text-sm text-slate-900 truncate">{user.name}</p>
+                      <p className="text-xs text-muted truncate">{user.email}</p>
+                      <span className="mt-1 inline-block text-[11px] font-bold text-brand-700 bg-brand-50 px-2 py-0.5 rounded-full">
+                        {user.role === 'RECRUITER' ? 'Recruiter' : 'Job Seeker'}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="my-2 border-t border-line/60" />
+
+                  <div className="space-y-0.5">
+                    <Link
+                      to={dashboardPath}
+                      onClick={() => setUserMenuOpen(false)}
+                      className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition"
+                    >
+                      <LayoutDashboard className="h-4 w-4 text-slate-400" />
+                      Dashboard
+                    </Link>
+
+                    <Link
+                      to={user.role === 'RECRUITER' ? '/recruiter/profile' : '/candidate/profile'}
+                      onClick={() => setUserMenuOpen(false)}
+                      className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition"
+                    >
+                      <UserIcon className="h-4 w-4 text-slate-400" />
+                      My Profile
+                    </Link>
+                  </div>
+
+                  <div className="my-2 border-t border-line/60" />
+
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="flex items-center gap-2.5 w-full rounded-lg px-3 py-2 text-sm font-semibold text-red-600 hover:bg-red-50 transition text-left"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Sign out
+                  </button>
+                </div>
+              )}
+            </div>
           ) : (
             <>
               <Link to="/login" className="text-sm font-semibold text-ink">
@@ -117,10 +187,19 @@ export function Navbar() {
             )}
           </div>
           <div className="mt-4 flex flex-col gap-3">
-            {isAuthenticated ? (
-              <Button variant="secondary" onClick={handleLogout}>
-                Logout
-              </Button>
+            {isAuthenticated && user ? (
+              <div className="space-y-3">
+                <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
+                  <Avatar name={user.name} />
+                  <div className="min-w-0 flex-1">
+                    <p className="font-bold text-sm truncate">{user.name}</p>
+                    <p className="text-xs text-muted truncate">{user.email}</p>
+                  </div>
+                </div>
+                <Button variant="danger" className="w-full" onClick={handleLogout}>
+                  <LogOut className="h-4 w-4" /> Sign out
+                </Button>
+              </div>
             ) : (
               <>
                 <Link to="/login" onClick={() => setOpen(false)} className="text-sm font-semibold">
@@ -135,5 +214,6 @@ export function Navbar() {
         </div>
       ) : null}
     </header>
+
   );
 }
