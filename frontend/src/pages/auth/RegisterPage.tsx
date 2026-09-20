@@ -69,7 +69,7 @@ export function RegisterPage() {
 
   return (
     <AuthLayout>
-      <h1 className="text-3xl font-extrabold text-ink">Create your CareerLink account</h1>
+      <h1 className="text-3xl font-extrabold text-ink dark:text-white">Create your CareerLink account</h1>
 
       {!role ? (
         <>
@@ -82,14 +82,14 @@ export function RegisterPage() {
                   key={key}
                   type="button"
                   onClick={() => setRole(key)}
-                  className="flex items-start gap-4 rounded-lg border border-line bg-white p-5 text-left transition hover:border-brand-500 hover:shadow-soft"
+                  className="flex items-start gap-4 rounded-lg border border-line dark:border-slate-600 bg-white dark:bg-slate-800 p-5 text-left transition hover:border-brand-500 dark:hover:border-brand-400 hover:shadow-soft"
                 >
                   <span className="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-brand-50 text-brand-700">
                     <Icon className="h-5 w-5" />
                   </span>
                   <span>
-                    <span className="block font-bold text-ink">{title}</span>
-                    <span className="mt-1 block text-sm text-muted">{description}</span>
+                    <span className="block font-bold text-ink dark:text-white">{title}</span>
+                    <span className="mt-1 block text-sm text-muted dark:text-slate-400">{description}</span>
                   </span>
                 </button>
               );
@@ -108,7 +108,7 @@ export function RegisterPage() {
             <ArrowLeft className="h-4 w-4" /> Change role
           </button>
           {error ? (
-            <p className="mt-4 rounded-md bg-red-50 p-3 text-sm font-medium text-red-700" role="alert">{error}</p>
+            <p className="mt-4 rounded-md bg-red-50 dark:bg-red-950/40 p-3 text-sm font-medium text-red-700 dark:text-red-300" role="alert">{error}</p>
           ) : null}
           <form className="mt-5 grid gap-4" onSubmit={handleSubmit(onSubmit)} noValidate>
             <Input label="Full name" autoComplete="name" required error={formState.errors.name?.message} {...register('name')} />

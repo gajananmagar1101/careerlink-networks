@@ -3,6 +3,9 @@ server:
 spring:
   application:
     name: application-service
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
   data:
     mongodb:
       uri: ${APPLICATION_MONGODB_URI:${MONGODB_URI:mongodb://localhost:27017/careerlink_application}}

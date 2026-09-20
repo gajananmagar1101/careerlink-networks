@@ -1,28 +1,44 @@
 import React from 'react';
+import { useTheme } from '../../context/ThemeContext';
 
 interface LogoProps {
   className?: string;
-  variant?: 'dark' | 'light' | 'icon';
+  variant?: 'auto' | 'dark' | 'light' | 'icon';
   height?: number | string;
   alt?: string;
 }
 
 /**
  * CareerLink official brand logo component.
- * - `dark`: Standard logo (dark text + green) for white/light backgrounds (default).
+ * - `auto`: Automatically selects dark/light variant based on current ThemeContext (default).
+ * - `dark`: Standard logo (dark text + green) for white/light backgrounds.
  * - `light`: White-text version (white text + green) for dark backgrounds.
  * - `icon`: Icon mark only.
  */
 export const Logo: React.FC<LogoProps> = ({
   className = '',
-  variant = 'dark',
+  variant = 'auto',
   height = 34,
   alt = 'CareerLink'
 }) => {
+  let effectiveVariant = variant;
+  try {
+    // Attempt to read current theme
+    const themeContext = useTheme();
+    if (variant === 'auto') {
+      effectiveVariant = themeContext.theme === 'dark' ? 'light' : 'dark';
+    }
+  } catch {
+    // Fallback if rendered outside ThemeProvider (e.g. isolated tests)
+    if (variant === 'auto') {
+      effectiveVariant = 'dark';
+    }
+  }
+
   let src = '/logo.png';
-  if (variant === 'light') {
+  if (effectiveVariant === 'light') {
     src = '/logo-white.png';
-  } else if (variant === 'icon') {
+  } else if (effectiveVariant === 'icon') {
     src = '/logo-icon.png';
   }
 
@@ -31,7 +47,7 @@ export const Logo: React.FC<LogoProps> = ({
       src={src}
       alt={alt}
       style={{ height: typeof height === 'number' ? `${height}px` : height }}
-      className={`w-auto object-contain select-none ${className}`}
+      className={`w-auto object-contain select-none transition-opacity duration-200 ${className}`}
       loading="eager"
     />
   );

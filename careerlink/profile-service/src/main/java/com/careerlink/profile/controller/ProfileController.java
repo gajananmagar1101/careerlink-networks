@@ -30,6 +30,11 @@ public class ProfileController {
         return ApiResponse.ok("Candidate profile updated", profiles.saveCandidate(authUserId, role, userId, request));
     }
 
+    @PostMapping("/candidate/{userId}/viewed/{jobId}")
+    ApiResponse<CandidateProfile> recordRecentlyViewed(@RequestHeader("X-User-Id") String authUserId, @RequestHeader("X-User-Role") String role, @PathVariable String userId, @PathVariable String jobId) {
+        return ApiResponse.ok("Recorded viewed job", profiles.recordRecentlyViewed(authUserId, role, userId, jobId));
+    }
+
     @PostMapping("/recruiter")
     ApiResponse<RecruiterProfile> createRecruiter(@RequestHeader("X-User-Id") String userId, @RequestHeader("X-User-Role") String role, @Valid @RequestBody RecruiterProfileRequest request) {
         return ApiResponse.ok("Recruiter profile saved", profiles.saveRecruiter(userId, role, userId, request));

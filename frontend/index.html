@@ -4,8 +4,37 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#f8fafc" />
+    <!-- Declare explicit color-scheme support so browsers/Chrome never force-alter styling -->
+    <meta name="color-scheme" content="light" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <title>CareerLink Networks</title>
+    <!--
+      Theme initialization: runs synchronously before React loads to eliminate FOUC.
+      Only applies dark mode if explicitly saved as 'dark' in localStorage.
+      Defaults strictly to light mode.
+    -->
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('careerlink_theme') || localStorage.getItem('careerlink_theme_v2');
+          if (saved === 'dark') {
+            document.documentElement.classList.add('dark');
+            document.documentElement.style.colorScheme = 'dark';
+            var metaCs = document.querySelector('meta[name="color-scheme"]');
+            if (metaCs) metaCs.setAttribute('content', 'dark');
+            var metaTc = document.querySelector('meta[name="theme-color"]');
+            if (metaTc) metaTc.setAttribute('content', '#090d11');
+          } else {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.style.colorScheme = 'light';
+            var metaCs = document.querySelector('meta[name="color-scheme"]');
+            if (metaCs) metaCs.setAttribute('content', 'light');
+            var metaTc = document.querySelector('meta[name="theme-color"]');
+            if (metaTc) metaTc.setAttribute('content', '#f8fafc');
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

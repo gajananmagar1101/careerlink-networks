@@ -9,5 +9,7 @@ export const profileApi = {
   getRecruiter: (userId: string) => unwrap<RecruiterProfile>(apiClient.get(`/api/profiles/recruiter/${userId}`)),
   saveRecruiter: (payload: RecruiterProfile) => unwrap<RecruiterProfile>(apiClient.post('/api/profiles/recruiter', payload)),
   updateRecruiter: (userId: string, payload: RecruiterProfile) =>
-    unwrap<RecruiterProfile>(apiClient.put(`/api/profiles/recruiter/${userId}`, payload))
+    unwrap<RecruiterProfile>(apiClient.put(`/api/profiles/recruiter/${userId}`, payload)),
+  recordRecentlyViewed: (userId: string, jobId: string) =>
+    unwrap<CandidateProfile>(apiClient.post(`/api/profiles/candidate/${userId}/viewed/${jobId}`))
 };

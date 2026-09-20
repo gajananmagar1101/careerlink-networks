@@ -55,26 +55,36 @@ export function LandingSections({ featured }: { featured: { isLoading: boolean; 
 
   return (
     <>
-      <section aria-label="Platform measures" className="border-b border-line bg-white py-10">
-        <div className="mx-auto grid max-w-7xl gap-6 px-4 sm:grid-cols-4 sm:px-6 lg:px-8">
-          {[
-            { value: liveCount != null && !featured.authRequired ? String(liveCount) : 'Live', label: 'Open jobs in the network' },
-            { value: companies.length && !featured.authRequired ? String(companies.length) : 'Teams', label: 'Hiring companies posting here' },
-            { value: '2', label: 'Focused workspaces: candidate and recruiter' },
-            { value: '7', label: 'Application statuses from applied to hired' }
-          ].map((item) => (
-            <div key={item.label}>
-              <p className="text-3xl font-extrabold text-ink">{item.value}</p>
-              <p className="mt-2 text-sm text-muted">{item.label}</p>
-            </div>
-          ))}
-        </div>
-        {featured.authRequired ? (
-          <p className="mx-auto mt-4 max-w-7xl px-4 text-xs text-muted sm:px-6 lg:px-8">Live job counts appear after you sign in. The API Gateway currently protects job listings.</p>
-        ) : null}
-      </section>
+      <div className="relative">
+        {/* Lower section canvas background coming halfway up behind the stats card */}
+        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-canvas border-t border-line pointer-events-none" aria-hidden="true" />
 
-      <section id="companies" className="border-b border-line bg-canvas py-12">
+        <section aria-label="Platform measures" className="relative z-20 mx-4 sm:mx-6 lg:mx-auto max-w-5xl py-2 sm:py-3">
+          <div className="rounded-2xl sm:rounded-3xl border border-line bg-white shadow-soft py-8 px-6 sm:py-10 sm:px-10">
+            <div className="grid gap-6 sm:grid-cols-4 sm:gap-8">
+              {[
+                { value: liveCount != null && !featured.authRequired ? String(liveCount) : 'Live', label: 'Open jobs in the network' },
+                { value: companies.length && !featured.authRequired ? String(companies.length) : 'Teams', label: 'Hiring companies posting here' },
+                { value: '2', label: 'Focused workspaces: candidate and recruiter' },
+                { value: '7', label: 'Application statuses from applied to hired' }
+              ].map((item) => (
+                <div key={item.label}>
+                  <p className="text-3xl font-extrabold text-ink">{item.value}</p>
+                  <p className="mt-2 text-sm text-muted">{item.label}</p>
+                </div>
+              ))}
+            </div>
+            {featured.authRequired ? (
+              <p className="mt-4 border-t border-line/60 pt-3 text-xs text-muted">
+                Live job counts appear after you sign in. The API Gateway currently protects job listings.
+              </p>
+            ) : null}
+          </div>
+        </section>
+      </div>
+
+      <div className="bg-canvas">
+        <section id="companies" className="scroll-mt-20 border-b border-line pt-6 pb-10 sm:pt-8 sm:pb-12">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <p className="text-center text-sm font-bold text-brand-700">Hiring across industries</p>
           <h2 className="mt-2 text-center text-2xl font-extrabold text-ink">Companies posting on CareerLink</h2>
@@ -89,7 +99,7 @@ export function LandingSections({ featured }: { featured: { isLoading: boolean; 
         </div>
       </section>
 
-      <section id="about" className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <section id="about" className="scroll-mt-20 mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="max-w-2xl">
           <p className="text-sm font-bold text-brand-700">Why CareerLink</p>
           <h2 className="mt-2 text-3xl font-extrabold text-ink">Hiring should feel organized, not noisy.</h2>
@@ -111,7 +121,7 @@ export function LandingSections({ featured }: { featured: { isLoading: boolean; 
         </div>
       </section>
 
-      <section id="recruiters" className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
+      <section id="recruiters" className="scroll-mt-20 mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
         <div className="grid gap-5 lg:grid-cols-2">
           {AUDIENCES.map(({ label, title, description, items, cta, href, tint, icon: Icon }) => (
             <div key={label} className={`rounded-lg border border-line p-7 sm:p-9 ${tint}`}>
@@ -230,6 +240,7 @@ export function LandingSections({ featured }: { featured: { isLoading: boolean; 
           </div>
         </div>
       </section>
+    </div>
     </>
   );
 }

@@ -42,7 +42,7 @@ export function CandidateProfilePage() {
       location: profileQuery.data?.location ?? '',
       headline: profileQuery.data?.headline ?? '',
       summary: profileQuery.data?.summary ?? '',
-      skills: profileQuery.data?.skills?.join(', ') ?? 'Java, Spring Boot, React',
+      skills: profileQuery.data?.skills?.join(', ') ?? '',
       education: profileQuery.data?.education?.join(', ') ?? '',
       experience: profileQuery.data?.experience?.join(', ') ?? '',
       resumeUrl: profileQuery.data?.resumeUrl ?? ''

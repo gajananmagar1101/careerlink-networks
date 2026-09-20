@@ -30,7 +30,7 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
         </div>
         <p className="text-xs text-slate-400">© {new Date().getFullYear()} CareerLink Networks</p>
       </section>
-      <section className="flex items-center justify-center bg-canvas px-4 py-12 sm:px-6">
+      <section className="flex items-center justify-center bg-canvas dark:bg-slate-900 px-4 py-12 sm:px-6 transition-colors">
         <div className="w-full max-w-md">{children}</div>
       </section>
     </main>

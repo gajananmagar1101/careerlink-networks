@@ -18,11 +18,12 @@ class ApplicationServiceTest {
     private final ApplicationRepository repo = mock(ApplicationRepository.class);
     private final JobClient jobs = mock(JobClient.class);
     private final ProfileClient profiles = mock(ProfileClient.class);
-    private final ApplicationService service = new ApplicationService(repo, jobs, profiles);
+    private final NotificationService notifications = mock(NotificationService.class);
+    private final ApplicationService service = new ApplicationService(repo, jobs, profiles, notifications);
 
     @Test
     void candidateCanApplyToOpenJobOnlyOnce() {
-        when(jobs.getJob("j1")).thenReturn(new RemoteApiResponse<>(true, "ok", new JobDto("j1", "r1", "OPEN", LocalDate.now().plusDays(7))));
+        when(jobs.getJob("j1")).thenReturn(new RemoteApiResponse<>(true, "ok", new JobDto("j1", "r1", "OPEN", LocalDate.now().plusDays(7), "SWE", "Acme")));
         when(repo.existsByJobIdAndCandidateId("j1", "c1")).thenReturn(false);
         when(repo.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
@@ -35,7 +36,7 @@ class ApplicationServiceTest {
 
     @Test
     void candidateCannotApplyToClosedJob() {
-        when(jobs.getJob("j1")).thenReturn(new RemoteApiResponse<>(true, "ok", new JobDto("j1", "r1", "CLOSED", LocalDate.now().plusDays(7))));
+        when(jobs.getJob("j1")).thenReturn(new RemoteApiResponse<>(true, "ok", new JobDto("j1", "r1", "CLOSED", LocalDate.now().plusDays(7), "SWE", "Acme")));
         assertThatThrownBy(() -> service.apply("c1", "CANDIDATE", new ApplicationRequest("j1", null, null))).isInstanceOf(JobClosedException.class);
     }
 
@@ -48,7 +49,7 @@ class ApplicationServiceTest {
 
     @Test
     void recruiterCannotViewAnotherRecruitersJobApplications() {
-        when(jobs.getJob("j1")).thenReturn(new RemoteApiResponse<>(true, "ok", new JobDto("j1", "r2", "OPEN", null)));
+        when(jobs.getJob("j1")).thenReturn(new RemoteApiResponse<>(true, "ok", new JobDto("j1", "r2", "OPEN", null, "SWE", "Acme")));
         assertThatThrownBy(() -> service.byJob("r1", "RECRUITER", "j1")).isInstanceOf(UnauthorizedException.class);
     }
 }

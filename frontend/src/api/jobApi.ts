@@ -9,5 +9,11 @@ export const jobApi = {
     unwrap<Page<Job>>(apiClient.get(`/api/jobs/recruiter/${recruiterId}`, { params })),
   create: (payload: JobRequest) => unwrap<Job>(apiClient.post('/api/jobs', payload)),
   update: (jobId: string, payload: JobRequest) => unwrap<Job>(apiClient.put(`/api/jobs/${jobId}`, payload)),
-  remove: (jobId: string) => unwrap<void>(apiClient.delete(`/api/jobs/${jobId}`))
+  remove: (jobId: string) => unwrap<void>(apiClient.delete(`/api/jobs/${jobId}`)),
+  save: (jobId: string) => unwrap<void>(apiClient.post(`/api/jobs/${jobId}/save`)),
+  unsave: (jobId: string) => unwrap<void>(apiClient.delete(`/api/jobs/${jobId}/save`)),
+  getSavedJobs: (params?: { page?: number; size?: number }) =>
+    unwrap<Page<Job>>(apiClient.get('/api/jobs/saved', { params })),
+  getSavedJobIds: () => unwrap<string[]>(apiClient.get('/api/jobs/saved/ids')),
+  getMatch: (jobId: string) => unwrap<import('../types/domain').JobMatch>(apiClient.get(`/api/jobs/${jobId}/match`))
 };

@@ -44,16 +44,16 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
             <div
               key={toast.id}
               className={clsx(
-                'animate-[toast-in_.18s_ease-out] rounded-md border bg-white p-4 shadow-soft',
-                toast.tone === 'success' && 'border-brand-100',
-                toast.tone === 'error' && 'border-red-200',
-                toast.tone === 'info' && 'border-slate-200'
+                'animate-[toast-in_.18s_ease-out] rounded-md border bg-white dark:bg-slate-900 p-4 shadow-soft',
+                toast.tone === 'success' && 'border-brand-100 dark:border-brand-800',
+                toast.tone === 'error' && 'border-red-200 dark:border-red-800',
+                toast.tone === 'info' && 'border-slate-200 dark:border-slate-700'
               )}
             >
               <div className="flex items-start gap-3">
-                <Icon className={clsx('mt-0.5 h-5 w-5', toast.tone === 'error' ? 'text-red-600' : 'text-brand-600')} />
-                <p className="flex-1 text-sm font-medium text-ink">{toast.message}</p>
-                <button type="button" className="rounded p-1 text-muted hover:bg-slate-100" onClick={() => dismiss(toast.id)} aria-label="Dismiss notification">
+                <Icon className={clsx('mt-0.5 h-5 w-5 shrink-0', toast.tone === 'error' ? 'text-red-600 dark:text-red-400' : 'text-brand-600 dark:text-brand-400')} />
+                <p className="flex-1 text-sm font-medium text-ink dark:text-slate-100">{toast.message}</p>
+                <button type="button" className="rounded p-1 text-muted dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition" onClick={() => dismiss(toast.id)} aria-label="Dismiss notification">
                   <X className="h-4 w-4" />
                 </button>
               </div>

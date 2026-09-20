@@ -36,7 +36,7 @@ export function Pagination({ page, totalPages, onPageChange }: PaginationProps) 
       <button
         onClick={() => onPageChange(page - 1)}
         disabled={page === 0}
-        className="inline-flex h-9 w-9 items-center justify-center rounded border border-line bg-white text-muted hover:bg-canvas disabled:opacity-50"
+        className="inline-flex h-9 w-9 items-center justify-center rounded border border-line dark:border-slate-600 bg-white dark:bg-slate-800 text-muted dark:text-slate-400 hover:bg-canvas dark:hover:bg-slate-700 disabled:opacity-50"
         aria-label="Previous page"
       >
         <ChevronLeft className="h-5 w-5" />
@@ -44,7 +44,7 @@ export function Pagination({ page, totalPages, onPageChange }: PaginationProps) 
 
       {getPageItems().map((p, i) => (
         p === '...' ? (
-          <span key={`ellipsis-${i}`} className="px-2 text-muted">...</span>
+          <span key={`ellipsis-${i}`} className="px-2 text-muted dark:text-slate-400">...</span>
         ) : (
           <button
             key={p}
@@ -53,7 +53,7 @@ export function Pagination({ page, totalPages, onPageChange }: PaginationProps) 
               "inline-flex h-9 min-w-9 items-center justify-center rounded px-3 text-sm font-semibold transition-colors",
               page === p
                 ? "bg-brand-600 text-white"
-                : "border border-line bg-white text-muted hover:bg-brand-50 hover:text-brand-700"
+                : "border border-line dark:border-slate-600 bg-white dark:bg-slate-800 text-muted dark:text-slate-300 hover:bg-brand-50 dark:hover:bg-slate-700 hover:text-brand-700 dark:hover:text-brand-400"
             )}
             aria-current={page === p ? "page" : undefined}
           >
@@ -65,7 +65,7 @@ export function Pagination({ page, totalPages, onPageChange }: PaginationProps) 
       <button
         onClick={() => onPageChange(page + 1)}
         disabled={page >= totalPages - 1}
-        className="inline-flex h-9 w-9 items-center justify-center rounded border border-line bg-white text-muted hover:bg-canvas disabled:opacity-50"
+        className="inline-flex h-9 w-9 items-center justify-center rounded border border-line dark:border-slate-600 bg-white dark:bg-slate-800 text-muted dark:text-slate-400 hover:bg-canvas dark:hover:bg-slate-700 disabled:opacity-50"
         aria-label="Next page"
       >
         <ChevronRight className="h-5 w-5" />

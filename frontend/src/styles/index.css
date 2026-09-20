@@ -11,6 +11,16 @@
 
   html {
     scroll-behavior: smooth;
+    overscroll-behavior-y: none;
+    /* Force browser to render in light color scheme by default.
+       This blocks Chrome/OS dark mode from affecting scrollbars,
+       form controls, and other browser-rendered UI elements.
+       Only our own Tailwind dark: classes control dark styling. */
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
   }
 
   body {
@@ -19,6 +29,48 @@
     background: #f7faf8;
     color: #17211f;
     font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+    overscroll-behavior-y: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  html.dark body {
+    background: #090d11;
+    color: #f1f5f9;
+  }
+
+  /* Make custom design tokens dark-mode aware globally.
+     text-ink and text-muted are static hex values in Tailwind config —
+     they don't automatically flip. These rules make every existing usage
+     across ALL pages and components correct in dark mode. */
+  html.dark .text-ink {
+    color: #f1f5f9;
+  }
+  html.dark .text-muted {
+    color: #94a3b8;
+  }
+  /* border-line (#d9e2df) is near-invisible on dark surfaces.
+     Override it globally with a proper dark border. */
+  html.dark .border-line {
+    border-color: rgb(51 65 85); /* slate-700 */
+  }
+  html.dark .border-b.border-line,
+  html.dark .border-t.border-line {
+    border-color: rgb(51 65 85);
+  }
+
+  /* Layout resilience: ensure root canvas, navbar header, and footer follow dark mode */
+  html.dark .bg-canvas {
+    background-color: #090d11 !important;
+  }
+
+  html.dark header.sticky {
+    background-color: rgba(15, 23, 42, 0.95) !important;
+    border-color: rgb(30, 41, 59) !important;
+  }
+
+  html.dark footer {
+    background-color: rgb(15, 23, 42) !important;
+    border-color: rgb(30, 41, 59) !important;
   }
 
   button,
@@ -35,20 +87,47 @@
 }
 
 @layer components {
+  /* .surface: base light-mode card style.
+     Dark mode is additionally enforced via Tailwind dark: utilities directly
+     on the Card element (in @layer utilities, highest priority layer).
+     The html.dark .surface rule here acts as a fallback for any non-Card
+     usage of the .surface class. */
   .surface {
-    @apply border border-line bg-white shadow-soft;
+    @apply border border-line bg-white shadow-soft transition-colors;
+  }
+
+  html.dark .surface {
+    background-color: rgb(15 23 42) !important; /* slate-900 */
+    border-color: rgb(30 41 59) !important;     /* slate-800 */
+    color: rgb(241 245 249) !important;         /* slate-100 */
   }
 
   .product-preview {
     @apply rounded-lg border border-line bg-white p-6 shadow-soft;
   }
 
+  html.dark .product-preview {
+    background-color: rgb(15 23 42) !important;
+    border-color: rgb(30 41 59) !important;
+    color: rgb(241 245 249) !important;
+  }
+
   .preview-label {
     @apply inline-flex rounded-md border border-line bg-canvas px-2 py-1 text-[11px] font-semibold text-muted;
   }
 
+  html.dark .preview-label {
+    background-color: rgb(30 41 59) !important;
+    border-color: rgb(51 65 85) !important;
+    color: rgb(203 213 225) !important;
+  }
+
   .field-label {
     @apply text-sm font-semibold text-ink;
+  }
+
+  html.dark .field-label {
+    @apply text-slate-200;
   }
 
   .field-error {
@@ -62,8 +141,18 @@
     background-size: 38px 38px;
   }
 
+  html.dark .subtle-grid {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  }
+
   .skeleton {
     @apply relative overflow-hidden bg-slate-200;
+  }
+
+  html.dark .skeleton {
+    @apply bg-slate-800;
   }
 
   .skeleton::after {
@@ -71,6 +160,10 @@
     @apply absolute inset-0 -translate-x-full;
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
     animation: shimmer 1.4s infinite;
+  }
+
+  html.dark .skeleton::after {
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
   }
 }
 
@@ -90,3 +183,96 @@
     transform: translateY(0);
   }
 }
+
+@keyframes journey-fade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-journey-fade {
+  animation: journey-fade 0.3s ease-out forwards;
+}
+
+@keyframes pill-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(-40%) scale(0.72);
+  }
+  65% {
+    opacity: 1;
+    transform: translateY(-52%) scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+  }
+}
+
+@keyframes node-pulse-ring {
+  0% {
+    r: 2.2;
+    opacity: 0.8;
+  }
+  50% {
+    r: 4.2;
+    opacity: 0.25;
+  }
+  100% {
+    r: 2.2;
+    opacity: 0.8;
+  }
+}
+
+@keyframes trajectory-draw {
+  from {
+    stroke-dashoffset: 120;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-pill-pop-1 {
+  animation: pill-pop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
+}
+
+.animate-pill-pop-2 {
+  animation: pill-pop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s both;
+}
+
+.animate-pill-pop-3 {
+  animation: pill-pop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 0.7s both;
+}
+
+.animate-node-pulse {
+  animation: node-pulse-ring 2.2s ease-in-out infinite;
+}
+
+.animate-trajectory-draw {
+  stroke-dasharray: 120;
+  stroke-dashoffset: 120;
+  animation: trajectory-draw 1s cubic-bezier(0.4, 0, 0.2, 1) 0.05s forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-journey-fade,
+  .animate-pill-pop-1,
+  .animate-pill-pop-2,
+  .animate-pill-pop-3,
+  .animate-node-pulse,
+  .animate-trajectory-draw {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: translateY(-50%) scale(1) !important;
+    stroke-dashoffset: 0 !important;
+  }
+}
+
+

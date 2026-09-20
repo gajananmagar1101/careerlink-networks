@@ -1,14 +1,22 @@
 import type { ApplicationStatus } from '../types/domain';
 
-/** Happy-path stage order used to render application timelines. */
-export const statusOrder: readonly ApplicationStatus[] = ['APPLIED', 'UNDER_REVIEW', 'SHORTLISTED', 'INTERVIEW', 'HIRED'];
+export const statusOrder: readonly ApplicationStatus[] = [
+  'APPLIED',
+  'UNDER_REVIEW',
+  'SHORTLISTED',
+  'INTERVIEW_SCHEDULED',
+  'OFFERED',
+  'HIRED'
+];
 
 export const applicationStatuses: readonly ApplicationStatus[] = [
   'APPLIED',
   'UNDER_REVIEW',
   'SHORTLISTED',
-  'INTERVIEW',
-  'REJECTED',
+  'INTERVIEW_SCHEDULED',
+  'INTERVIEW_COMPLETED',
+  'OFFERED',
   'HIRED',
+  'REJECTED',
   'WITHDRAWN'
 ];

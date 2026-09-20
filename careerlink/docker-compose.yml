@@ -7,6 +7,12 @@ services:
       - "${EUREKA_PORT:-8761}:8761"
     environment:
       EUREKA_PORT: 8761
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
 
   auth-service:
     build:
@@ -19,9 +25,17 @@ services:
       MONGODB_URI: ${MONGODB_URI}
       JWT_SECRET: ${JWT_SECRET}
       JWT_EXPIRATION: ${JWT_EXPIRATION:-86400000}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       EUREKA_DEFAULT_ZONE: http://eureka-server:8761/eureka/
     depends_on:
-      - eureka-server
+      eureka-server:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
 
   profile-service:
     build:
@@ -34,7 +48,14 @@ services:
       MONGODB_URI: ${MONGODB_URI}
       EUREKA_DEFAULT_ZONE: http://eureka-server:8761/eureka/
     depends_on:
-      - eureka-server
+      eureka-server:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/actuator/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
 
   job-service:
     build:
@@ -47,7 +68,14 @@ services:
       MONGODB_URI: ${MONGODB_URI}
       EUREKA_DEFAULT_ZONE: http://eureka-server:8761/eureka/
     depends_on:
-      - eureka-server
+      eureka-server:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8083/actuator/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
 
   application-service:
     build:
@@ -60,9 +88,18 @@ services:
       MONGODB_URI: ${MONGODB_URI}
       EUREKA_DEFAULT_ZONE: http://eureka-server:8761/eureka/
     depends_on:
-      - eureka-server
-      - job-service
-      - profile-service
+      eureka-server:
+        condition: service_healthy
+      job-service:
+        condition: service_healthy
+      profile-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8084/actuator/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
 
   api-gateway:
     build:
@@ -76,8 +113,13 @@ services:
       CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:3000,http://localhost:5173,http://localhost:4200}
       EUREKA_DEFAULT_ZONE: http://eureka-server:8761/eureka/
     depends_on:
-      - eureka-server
-      - auth-service
-      - profile-service
-      - job-service
-      - application-service
+      eureka-server:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
+      profile-service:
+        condition: service_healthy
+      job-service:
+        condition: service_healthy
+      application-service:
+        condition: service_healthy

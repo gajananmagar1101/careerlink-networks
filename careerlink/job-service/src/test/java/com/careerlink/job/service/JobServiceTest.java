@@ -17,7 +17,9 @@ import static org.mockito.Mockito.*;
 
 class JobServiceTest {
     private final JobRepository repo = mock(JobRepository.class);
-    private final JobService service = new JobService(repo, mock(MongoTemplate.class));
+    private final com.careerlink.job.repository.SavedJobRepository savedJobs = mock(com.careerlink.job.repository.SavedJobRepository.class);
+    private final com.careerlink.job.client.ProfileClient profileClient = mock(com.careerlink.job.client.ProfileClient.class);
+    private final JobService service = new JobService(repo, savedJobs, profileClient, mock(MongoTemplate.class));
     private final JobRequest request = new JobRequest("Java Backend Developer", "Looking for an experienced Spring Boot developer",
             "Pune", EmploymentType.FULL_TIME, 2, 500000, 900000, List.of("Java", "Spring Boot"), "Software", JobStatus.OPEN, LocalDate.now().plusDays(30), "CareerLink");
 

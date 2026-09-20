@@ -3,7 +3,7 @@ import { applicationApi } from '../api/applicationApi';
 import { jobApi } from '../api/jobApi';
 import { profileApi } from '../api/profileApi';
 import { authApi } from '../api/authApi';
-import type { ApiError, Application, ApplicationRequest, ApplicationStatus, CandidateProfile, Job } from '../types/domain';
+import type { Application, ApplicationRequest, ApplicationStatus, CandidateProfile, Job } from '../types/domain';
 
 async function jobsById(ids: string[]) {
   const unique = [...new Set(ids.filter(Boolean))];

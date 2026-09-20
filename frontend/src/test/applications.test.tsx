@@ -65,7 +65,8 @@ describe('Application Components', () => {
       expect(screen.getByText('APPLIED')).toBeInTheDocument();
       expect(screen.getByText('UNDER REVIEW')).toBeInTheDocument();
       expect(screen.getByText('SHORTLISTED')).toBeInTheDocument();
-      expect(screen.getByText('INTERVIEW')).toBeInTheDocument();
+      expect(screen.getByText('INTERVIEW SCHEDULED')).toBeInTheDocument();
+      expect(screen.getByText('OFFERED')).toBeInTheDocument();
       expect(screen.getByText('HIRED')).toBeInTheDocument();
     });
   });

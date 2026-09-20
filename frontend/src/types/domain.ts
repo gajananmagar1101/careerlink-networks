@@ -5,7 +5,9 @@ export type ApplicationStatus =
   | 'APPLIED'
   | 'UNDER_REVIEW'
   | 'SHORTLISTED'
-  | 'INTERVIEW'
+  | 'INTERVIEW_SCHEDULED'
+  | 'INTERVIEW_COMPLETED'
+  | 'OFFERED'
   | 'REJECTED'
   | 'HIRED'
   | 'WITHDRAWN';
@@ -72,6 +74,7 @@ export interface CandidateProfile {
   education?: string[];
   experience?: string[];
   resumeUrl?: string;
+  recentlyViewedJobIds?: string[];
 }
 
 export interface RecruiterProfile {
@@ -147,4 +150,95 @@ export interface ApplicationRequest {
   jobId: string;
   resumeUrl?: string;
   coverLetter?: string;
+}
+
+export interface JobMatch {
+  score: number;
+  matchedSkills: string[];
+  missingSkills: string[];
+  experienceMatch: boolean;
+  locationMatch: boolean;
+  explanation: string;
+}
+
+export type NotificationType =
+  | 'APPLICATION_SUBMITTED'
+  | 'APPLICATION_STATUS_CHANGED'
+  | 'INTERVIEW_SCHEDULED'
+  | 'INTERVIEW_RESCHEDULED'
+  | 'INTERVIEW_CANCELLED'
+  | 'OFFER_SENT'
+  | 'OFFER_ACCEPTED'
+  | 'OFFER_DECLINED';
+
+export interface NotificationItem {
+  id: string;
+  userId: string;
+  type: NotificationType;
+  title: string;
+  message: string;
+  relatedEntityId?: string;
+  read: boolean;
+  createdAt: string;
+}
+
+export type InterviewStatus = 'SCHEDULED' | 'RESCHEDULED' | 'COMPLETED' | 'CANCELLED';
+
+export interface Interview {
+  id: string;
+  applicationId: string;
+  jobId: string;
+  candidateId: string;
+  recruiterId: string;
+  interviewType: string;
+  scheduledAt: string;
+  durationMinutes: number;
+  mode: string;
+  meetingLink?: string;
+  location?: string;
+  status: InterviewStatus;
+  notes?: string;
+  feedback?: string;
+  createdAt: string;
+  updatedAt?: string;
+  job?: Job;
+}
+
+export interface InterviewRequestPayload {
+  applicationId: string;
+  interviewType: string;
+  scheduledAt: string;
+  durationMinutes?: number;
+  mode?: string;
+  meetingLink?: string;
+  location?: string;
+  notes?: string;
+}
+
+export type OfferStatus = 'SENT' | 'ACCEPTED' | 'DECLINED' | 'WITHDRAWN' | 'EXPIRED';
+
+export interface Offer {
+  id: string;
+  applicationId: string;
+  jobId: string;
+  candidateId: string;
+  recruiterId: string;
+  salary: number;
+  currency: string;
+  joiningDate?: string;
+  employmentType: string;
+  message?: string;
+  status: OfferStatus;
+  createdAt: string;
+  updatedAt?: string;
+  job?: Job;
+}
+
+export interface OfferRequestPayload {
+  applicationId: string;
+  salary: number;
+  currency?: string;
+  joiningDate?: string;
+  employmentType?: string;
+  message?: string;
 }

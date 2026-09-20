@@ -12,3 +12,4 @@ target/
 .tools/
 .run-logs/
 .run-pids/
+task.md

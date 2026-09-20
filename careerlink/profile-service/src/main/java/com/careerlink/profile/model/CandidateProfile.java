@@ -23,6 +23,7 @@ public class CandidateProfile {
     private List<String> education;
     private List<String> experience;
     private String resumeUrl;
+    @Builder.Default private List<String> recentlyViewedJobIds = new java.util.ArrayList<>();
     @CreatedDate private Instant createdAt;
     @LastModifiedDate private Instant updatedAt;
 }

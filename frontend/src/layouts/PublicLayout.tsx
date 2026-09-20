@@ -4,7 +4,7 @@ import { Navbar } from '../components/Navbar';
 
 export function PublicLayout() {
   return (
-    <div className="min-h-screen bg-canvas">
+    <div className="min-h-screen bg-canvas dark:bg-[#090d11] text-ink dark:text-slate-100 transition-colors">
       <Navbar />
       <div id="main-content">
         <Outlet />

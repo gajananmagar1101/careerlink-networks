@@ -151,6 +151,10 @@ export function useAuth() {
   return context;
 }
 
+export function useOptionalAuth() {
+  return useContext(AuthContext);
+}
+
 export function roleDashboard(role: Role) {
   return role === 'RECRUITER' ? '/recruiter/dashboard' : '/candidate/dashboard';
 }

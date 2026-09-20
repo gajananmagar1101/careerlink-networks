@@ -18,7 +18,7 @@ import { formatDate } from '../../utils/format';
 
 const quickActions: Array<{ status: ApplicationStatus; label: string; tone?: 'danger' | 'primary' }> = [
   { status: 'SHORTLISTED', label: 'Shortlist' },
-  { status: 'INTERVIEW', label: 'Interview' },
+  { status: 'INTERVIEW_SCHEDULED', label: 'Schedule Interview' },
   { status: 'HIRED', label: 'Hire' },
   { status: 'REJECTED', label: 'Reject', tone: 'danger' }
 ];
@@ -88,7 +88,7 @@ export function RecruiterApplicationsPage() {
                 <div className="flex gap-3">
                   <Avatar name={application.candidateProfile?.fullName ?? 'Candidate'} />
                   <div>
-                    <h2 className="font-extrabold text-slate-900">{application.candidateProfile?.fullName ?? 'Candidate profile'}</h2>
+                    <h2 className="font-extrabold text-ink dark:text-white">{application.candidateProfile?.fullName ?? 'Candidate profile'}</h2>
                     <div className="mt-0.5 flex flex-wrap items-center gap-x-2 text-sm text-muted">
                       <span>{application.candidateProfile?.headline ?? 'Job Seeker'}</span>
                       {application.candidateProfile?.email ? <span>• {application.candidateProfile.email}</span> : null}

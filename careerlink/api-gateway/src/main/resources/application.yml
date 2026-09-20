@@ -23,6 +23,18 @@ spring:
           uri: lb://APPLICATION-SERVICE
           predicates:
             - Path=/api/applications/**
+        - id: notification-service
+          uri: lb://APPLICATION-SERVICE
+          predicates:
+            - Path=/api/notifications/**
+        - id: interview-service
+          uri: lb://APPLICATION-SERVICE
+          predicates:
+            - Path=/api/interviews/**
+        - id: offer-service
+          uri: lb://APPLICATION-SERVICE
+          predicates:
+            - Path=/api/offers/**
 
 eureka:
   client:

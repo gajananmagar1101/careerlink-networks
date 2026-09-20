@@ -37,7 +37,7 @@ export function RecruiterJobFormPage() {
   const updateJob = useUpdateJob(id ?? '');
   const { notify } = useToast();
   const navigate = useNavigate();
-  const { register, handleSubmit, formState, watch } = useForm<FormValues>({
+  const { register, handleSubmit, formState, watch, setValue } = useForm<FormValues>({
     resolver: zodResolver(schema),
     values: {
       title: job?.title ?? '',
@@ -129,7 +129,17 @@ export function RecruiterJobFormPage() {
       </Card>
       <div className="flex gap-3">
         <Button disabled={createJob.isPending || updateJob.isPending}><Save className="h-4 w-4" /> {isEdit ? 'Save Changes' : 'Publish Job'}</Button>
-        <Button type="button" variant="secondary">Save Draft</Button>
+        <Button
+          type="button"
+          variant="secondary"
+          disabled={createJob.isPending || updateJob.isPending}
+          onClick={() => {
+            setValue('status', 'DRAFT');
+            void handleSubmit(onSubmit)();
+          }}
+        >
+          Save Draft
+        </Button>
       </div>
     </form>
   );

@@ -52,7 +52,7 @@ export function RecruiterJobsPage() {
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2.5">
-                      <h2 className="text-lg font-extrabold text-slate-900">{job.title}</h2>
+                      <h2 className="text-lg font-extrabold text-ink dark:text-white">{job.title}</h2>
                       <StatusBadge status={job.status} />
                     </div>
                     <p className="mt-1 text-sm text-muted">

@@ -60,6 +60,24 @@ public class ProfileService {
                 .orElseThrow(() -> new ResourceNotFoundException("Candidate profile not found"));
     }
 
+    public CandidateProfile recordRecentlyViewed(String authUserId, String role, String userId, String jobId) {
+        requireOwner(authUserId, role, userId, "CANDIDATE");
+        CandidateProfile profile = getCandidate(authUserId, role, userId);
+        java.util.List<String> viewed = profile.getRecentlyViewedJobIds();
+        if (viewed == null) {
+            viewed = new java.util.ArrayList<>();
+        } else {
+            viewed = new java.util.ArrayList<>(viewed);
+        }
+        viewed.remove(jobId);
+        viewed.add(0, jobId);
+        if (viewed.size() > 10) {
+            viewed = viewed.subList(0, 10);
+        }
+        profile.setRecentlyViewedJobIds(viewed);
+        return candidates.save(profile);
+    }
+
     public RecruiterProfile saveRecruiter(String authUserId, String role, String userId, RecruiterProfileRequest request) {
         requireOwner(authUserId, role, userId, "RECRUITER");
         RecruiterProfile profile = recruiters.findByUserId(userId).orElseGet(RecruiterProfile::new);

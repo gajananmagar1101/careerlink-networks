@@ -25,14 +25,14 @@ export function Modal({
 
   if (!open) return null;
   return (
-    <div className="fixed inset-0 z-40 bg-ink/40 px-4 py-6 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
+    <div className="fixed inset-0 z-40 bg-ink/40 dark:bg-black/60 px-4 py-6 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
       <button type="button" className="absolute inset-0 cursor-default" aria-label="Close dialog" onClick={onClose} />
-      <div className="relative mx-auto max-h-[calc(100vh-3rem)] max-w-2xl overflow-auto rounded-lg bg-white shadow-soft">
-        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-line bg-white px-5 py-4">
-          <h2 id="dialog-title" className="text-lg font-bold text-ink">
+      <div className="relative mx-auto max-h-[calc(100vh-3rem)] max-w-2xl overflow-auto rounded-lg bg-white dark:bg-slate-900 border border-transparent dark:border-slate-800 text-slate-900 dark:text-slate-100 shadow-soft">
+        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-line dark:border-slate-800 bg-white dark:bg-slate-900 px-5 py-4">
+          <h2 id="dialog-title" className="text-lg font-bold text-ink dark:text-white">
             {title}
           </h2>
-          <button type="button" className="rounded p-2 hover:bg-slate-100" onClick={onClose} aria-label="Close dialog">
+          <button type="button" className="rounded p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800 transition-colors" onClick={onClose} aria-label="Close dialog">
             <X className="h-5 w-5" />
           </button>
         </div>
@@ -61,7 +61,7 @@ export function ConfirmDialog({
 }) {
   return (
     <Modal open={open} title={title} onClose={onCancel}>
-      <p className="text-sm leading-6 text-muted">{description}</p>
+      <p className="text-sm leading-6 text-muted dark:text-slate-400">{description}</p>
       <div className="mt-6 flex justify-end gap-3">
         <Button type="button" variant="secondary" onClick={onCancel}>
           Cancel
@@ -98,7 +98,7 @@ export function Drawer({
     <div className={clsx('fixed inset-0 z-40', open ? 'pointer-events-auto' : 'pointer-events-none')} aria-hidden={!open}>
       <button
         type="button"
-        className={clsx('absolute inset-0 bg-ink/40 transition', open ? 'opacity-100' : 'opacity-0')}
+        className={clsx('absolute inset-0 bg-ink/40 dark:bg-black/60 transition', open ? 'opacity-100' : 'opacity-0')}
         onClick={onClose}
         aria-label="Close panel"
       />
@@ -107,15 +107,15 @@ export function Drawer({
         aria-modal="true"
         aria-labelledby="drawer-title"
         className={clsx(
-          'absolute right-0 top-0 flex h-full w-full max-w-lg flex-col bg-white shadow-soft transition-transform duration-200',
+          'absolute right-0 top-0 flex h-full w-full max-w-lg flex-col bg-white dark:bg-slate-900 border-l border-transparent dark:border-slate-800 text-slate-900 dark:text-slate-100 shadow-soft transition-transform duration-200',
           open ? 'translate-x-0' : 'translate-x-full'
         )}
       >
-        <div className="flex items-center justify-between border-b border-line px-5 py-4">
-          <h2 id="drawer-title" className="text-lg font-bold">
+        <div className="flex items-center justify-between border-b border-line dark:border-slate-800 px-5 py-4">
+          <h2 id="drawer-title" className="text-lg font-bold text-slate-900 dark:text-white">
             {title}
           </h2>
-          <button type="button" className="rounded p-2 hover:bg-slate-100" onClick={onClose} aria-label="Close panel">
+          <button type="button" className="rounded p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800 transition-colors" onClick={onClose} aria-label="Close panel">
             <X className="h-5 w-5" />
           </button>
         </div>

@@ -23,6 +23,13 @@ const RecruiterJobsPage = lazy(() => import('../pages/recruiter/RecruiterJobsPag
 const RecruiterJobFormPage = lazy(() => import('../pages/recruiter/RecruiterJobFormPage').then((m) => ({ default: m.RecruiterJobFormPage })));
 const RecruiterApplicationsPage = lazy(() => import('../pages/recruiter/RecruiterApplicationsPage').then((m) => ({ default: m.RecruiterApplicationsPage })));
 const RecruiterInboxPage = lazy(() => import('../pages/recruiter/RecruiterInboxPage').then((m) => ({ default: m.RecruiterInboxPage })));
+const CandidateSavedJobsPage = lazy(() => import('../pages/candidate/CandidateSavedJobsPage').then((m) => ({ default: m.CandidateSavedJobsPage })));
+const CandidateInterviewsPage = lazy(() => import('../pages/candidate/CandidateInterviewsPage').then((m) => ({ default: m.CandidateInterviewsPage })));
+const CandidateOffersPage = lazy(() => import('../pages/candidate/CandidateOffersPage').then((m) => ({ default: m.CandidateOffersPage })));
+const NotificationsPage = lazy(() => import('../pages/NotificationsPage').then((m) => ({ default: m.NotificationsPage })));
+const RecruiterPipelinePage = lazy(() => import('../pages/recruiter/RecruiterPipelinePage').then((m) => ({ default: m.RecruiterPipelinePage })));
+const RecruiterInterviewsPage = lazy(() => import('../pages/recruiter/RecruiterInterviewsPage').then((m) => ({ default: m.RecruiterInterviewsPage })));
+const RecruiterOffersPage = lazy(() => import('../pages/recruiter/RecruiterOffersPage').then((m) => ({ default: m.RecruiterOffersPage })));
 const RecruiterProfilePage = lazy(() => import('../pages/recruiter/RecruiterProfilePage').then((m) => ({ default: m.RecruiterProfilePage })));
 const ErrorPage = lazy(() => import('../pages/system/ErrorPage').then((m) => ({ default: m.ErrorPage })));
 const ForbiddenPage = lazy(() => import('../pages/system/ForbiddenPage').then((m) => ({ default: m.ForbiddenPage })));
@@ -59,8 +66,12 @@ export function AppRoutes() {
               <Route path="/candidate/dashboard" element={<CandidateDashboard />} />
               <Route path="/candidate/jobs" element={<CandidateJobsPage />} />
               <Route path="/candidate/jobs/:id" element={<JobDetailsPage />} />
+              <Route path="/candidate/saved-jobs" element={<CandidateSavedJobsPage />} />
               <Route path="/candidate/applications" element={<CandidateApplicationsPage />} />
               <Route path="/candidate/applications/:id" element={<ApplicationDetailsPage />} />
+              <Route path="/candidate/interviews" element={<CandidateInterviewsPage />} />
+              <Route path="/candidate/offers" element={<CandidateOffersPage />} />
+              <Route path="/candidate/notifications" element={<NotificationsPage />} />
               <Route path="/candidate/profile" element={<CandidateProfilePage />} />
             </Route>
           </Route>
@@ -73,8 +84,12 @@ export function AppRoutes() {
               <Route path="/recruiter/jobs/new" element={<RecruiterJobFormPage />} />
               <Route path="/recruiter/jobs/:id" element={<JobDetailsPage />} />
               <Route path="/recruiter/jobs/:id/edit" element={<RecruiterJobFormPage />} />
+              <Route path="/recruiter/pipeline" element={<RecruiterPipelinePage />} />
               <Route path="/recruiter/jobs/:id/applications" element={<RecruiterApplicationsPage />} />
               <Route path="/recruiter/applications" element={<RecruiterInboxPage />} />
+              <Route path="/recruiter/interviews" element={<RecruiterInterviewsPage />} />
+              <Route path="/recruiter/offers" element={<RecruiterOffersPage />} />
+              <Route path="/recruiter/notifications" element={<NotificationsPage />} />
               <Route path="/recruiter/profile" element={<RecruiterProfilePage />} />
             </Route>
           </Route>

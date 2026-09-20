@@ -18,11 +18,14 @@ public class ApplicationService {
     private final ApplicationRepository applications;
     private final JobClient jobClient;
     private final ProfileClient profileClient;
+    private final NotificationService notificationService;
 
-    public ApplicationService(ApplicationRepository applications, JobClient jobClient, ProfileClient profileClient) {
+    public ApplicationService(ApplicationRepository applications, JobClient jobClient,
+                               ProfileClient profileClient, NotificationService notificationService) {
         this.applications = applications;
         this.jobClient = jobClient;
         this.profileClient = profileClient;
+        this.notificationService = notificationService;
     }
 
     public ApplicationDocument apply(String candidateId, String role, ApplicationRequest request) {
@@ -52,7 +55,17 @@ public class ApplicationService {
                 .coverLetter(request.coverLetter())
                 .status(ApplicationStatus.APPLIED)
                 .build();
-        return applications.save(document);
+        ApplicationDocument saved = applications.save(document);
+        // Notify candidate of successful application
+        notificationService.createNotification(
+                candidateId,
+                NotificationType.APPLICATION_SUBMITTED,
+                "Application submitted",
+                "Your application for \"" + job.title() + "\" at " + job.companyName() + " has been submitted.",
+                saved.getId()
+        );
+        log.info("Candidate {} applied to job {}", candidateId, request.jobId());
+        return saved;
     }
 
     public ApplicationDocument get(String userId, String role, String id) {
@@ -64,7 +77,7 @@ public class ApplicationService {
     public List<ApplicationDocument> byCandidate(String userId, String role, String candidateId) {
         requireRole(role, "CANDIDATE");
         if (!userId.equals(candidateId)) throw new UnauthorizedException("Candidates can view only their own applications");
-        return applications.findByCandidateId(candidateId);
+        return applications.findByCandidateIdOrderByAppliedAtDesc(candidateId);
     }
 
     public List<ApplicationDocument> byJob(String userId, String role, String jobId) {
@@ -76,17 +89,47 @@ public class ApplicationService {
 
     public ApplicationDocument updateStatus(String userId, String role, String id, ApplicationStatus status) {
         requireRole(role, "RECRUITER");
+        if (ApplicationStatus.isCandidateOnlyStatus(status)) {
+            throw new IllegalArgumentException("Recruiters cannot set status: " + status);
+        }
         ApplicationDocument app = applications.findById(id).orElseThrow(() -> new ResourceNotFoundException("Application not found"));
         JobDto job = fetchJob(app.getJobId());
         if (!userId.equals(job.recruiterId()) && !"ADMIN".equals(role)) throw new UnauthorizedException("Only owning recruiter can update status");
+
+        ApplicationStatus current = app.getStatus();
+        if (!current.canTransitionTo(status)) {
+            throw new InvalidStatusTransitionException("Cannot transition from " + current + " to " + status);
+        }
+
         app.setStatus(status);
-        return applications.save(app);
+        ApplicationDocument saved = applications.save(app);
+
+        // Notify candidate of status change
+        notificationService.createNotification(
+                app.getCandidateId(),
+                NotificationType.APPLICATION_STATUS_CHANGED,
+                "Application status updated",
+                "Your application for \"" + job.title() + "\" has been moved to: " + status.name().replace("_", " "),
+                saved.getId()
+        );
+        log.info("Recruiter {} updated application {} from {} to {}", userId, id, current, status);
+        return saved;
     }
 
     public void delete(String userId, String role, String id) {
         requireRole(role, "CANDIDATE");
         ApplicationDocument app = applications.findByIdAndCandidateId(id, userId).orElseThrow(() -> new ResourceNotFoundException("Application not found"));
-        applications.delete(app);
+        if (!app.getStatus().canTransitionTo(ApplicationStatus.WITHDRAWN) &&
+            app.getStatus() != ApplicationStatus.APPLIED) {
+            throw new IllegalStateException("Application cannot be withdrawn at this stage");
+        }
+        app.setStatus(ApplicationStatus.WITHDRAWN);
+        applications.save(app);
+        log.info("Candidate {} withdrew application {}", userId, id);
+    }
+
+    public boolean hasApplied(String candidateId, String jobId) {
+        return applications.existsByJobIdAndCandidateId(jobId, candidateId);
     }
 
     private void authorizeApplicationRead(String userId, String role, ApplicationDocument app) {

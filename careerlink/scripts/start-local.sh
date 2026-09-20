@@ -47,7 +47,11 @@ start_service() {
     EUREKA_DEFAULT_ZONE="$EUREKA_DEFAULT_ZONE_VALUE" \
     GOOGLE_CLIENT_ID="${GOOGLE_CLIENT_ID:-}" \
     "$port_var"="$port" \
-    nohup "$JAVA_BIN" -jar "$ROOT_DIR/$jar" > "$ROOT_DIR/.run-logs/$name.log" 2>&1 < /dev/null &
+    nohup "$JAVA_BIN" \
+      -Deureka.instance.prefer-ip-address=true \
+      -Deureka.instance.ip-address=127.0.0.1 \
+      -Deureka.instance.hostname=localhost \
+      -jar "$ROOT_DIR/$jar" > "$ROOT_DIR/.run-logs/$name.log" 2>&1 < /dev/null &
   echo "$!" > "$ROOT_DIR/.run-pids/$name.pid"
 }
 

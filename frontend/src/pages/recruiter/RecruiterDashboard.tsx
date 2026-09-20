@@ -1,4 +1,4 @@
-import { Briefcase, CalendarCheck, CheckCircle2, FileText, UsersRound } from 'lucide-react';
+import { Briefcase, CalendarCheck, FileText, UsersRound, Kanban, Gift, Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
@@ -7,12 +7,17 @@ import { StatCard } from '../../components/ui/StatCard';
 import { StatusBadge } from '../../components/ui/StatusBadge';
 import { useAuth } from '../../context/AuthContext';
 import { useRecruiterPipeline } from '../../hooks/useRecruiterPipeline';
+import { useRecruiterInterviews } from '../../hooks/useInterviews';
+import { useRecruiterOffers } from '../../hooks/useOffers';
 import { appliedDate } from '../../utils/applications';
 import { formatDate } from '../../utils/format';
 
 export function RecruiterDashboard() {
   const { user } = useAuth();
   const pipeline = useRecruiterPipeline(user?.id);
+  const { data: interviews = [] } = useRecruiterInterviews(Boolean(user?.id));
+  const { data: offers = [] } = useRecruiterOffers(Boolean(user?.id));
+
   const rows = pipeline.data ?? [];
   const jobs = rows.map((row) => row.job);
   const applications = rows.flatMap((row) => row.applications);
@@ -22,11 +27,27 @@ export function RecruiterDashboard() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
-          <p className="text-sm font-bold text-brand-700">Recruiter workspace</p>
-          <h1 className="mt-1 text-3xl font-extrabold">Hiring overview</h1>
-          <p className="mt-2 text-muted">Monitor open roles, pipeline health, and candidate movement from live application data.</p>
+          <p className="text-sm font-bold text-brand-700 uppercase tracking-wider">Recruiter Workspace</p>
+          <h1 className="mt-1 text-3xl font-extrabold text-ink">Talent Acquisition Hub</h1>
+          <p className="mt-1 text-muted">Manage jobs, coordinate applicant pipelines, schedule interviews, and extend offers.</p>
         </div>
-        <Link to="/recruiter/jobs/new"><Button>Post a Job</Button></Link>
+        <div className="flex flex-wrap items-center gap-3">
+          <Link to="/recruiter/pipeline">
+            <Button variant="outline" className="gap-2">
+              <Kanban className="h-4 w-4 text-brand-600" /> Pipeline Board
+            </Button>
+          </Link>
+          <Link to="/recruiter/interviews">
+            <Button variant="outline" className="gap-2">
+              <CalendarCheck className="h-4 w-4 text-purple-600" /> Interviews ({interviews.length})
+            </Button>
+          </Link>
+          <Link to="/recruiter/jobs/new">
+            <Button className="gap-2">
+              <Plus className="h-4 w-4" /> Post a Job
+            </Button>
+          </Link>
+        </div>
       </div>
 
       {pipeline.isLoading ? <LoadingSkeleton rows={2} /> : null}
@@ -37,26 +58,39 @@ export function RecruiterDashboard() {
       {!pipeline.isLoading && !pipeline.isError ? (
         jobs.length ? (
           <>
-            <div className="grid gap-4 md:grid-cols-5">
-              <StatCard label="Active Jobs" value={activeJobs} icon={Briefcase} />
-              <StatCard label="Total Applications" value={applications.length} icon={FileText} />
-              <StatCard label="Shortlisted" value={applications.filter((item) => item.status === 'SHORTLISTED').length} icon={UsersRound} />
-              <StatCard label="Interviews" value={applications.filter((item) => item.status === 'INTERVIEW').length} icon={CalendarCheck} />
-              <StatCard label="Hired" value={applications.filter((item) => item.status === 'HIRED').length} icon={CheckCircle2} />
+            <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-5">
+              <StatCard label="Active Postings" value={activeJobs} icon={Briefcase} />
+              <StatCard label="Total Applicants" value={applications.length} icon={FileText} />
+              <Link to="/recruiter/pipeline" className="block transition hover:scale-[1.02]">
+                <StatCard label="Shortlisted" value={applications.filter((item) => item.status === 'SHORTLISTED').length} icon={UsersRound} />
+              </Link>
+              <Link to="/recruiter/interviews" className="block transition hover:scale-[1.02]">
+                <StatCard label="Interviews" value={interviews.length} icon={CalendarCheck} />
+              </Link>
+              <Link to="/recruiter/offers" className="block transition hover:scale-[1.02]">
+                <StatCard label="Offers Sent" value={offers.length} icon={Gift} />
+              </Link>
             </div>
 
             <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
               <Card>
                 <div className="flex items-center justify-between">
-                  <h2 className="text-xl font-extrabold">Recent applications</h2>
-                  <Link className="text-sm font-bold text-brand-700" to="/recruiter/applications">View inbox</Link>
+                  <h2 className="text-xl font-extrabold text-ink">Recent Applications</h2>
+                  <div className="flex items-center gap-3">
+                    <Link className="text-xs font-bold text-brand-700 hover:underline" to="/recruiter/pipeline">
+                      Open Kanban →
+                    </Link>
+                    <Link className="text-xs font-bold text-slate-500 hover:underline" to="/recruiter/applications">
+                      View all
+                    </Link>
+                  </div>
                 </div>
                 <div className="mt-4 space-y-4">
                   {applications.slice(0, 5).length ? applications.slice(0, 5).map((application) => (
                     <div key={application.id} className="flex items-center justify-between gap-3 border-b border-line pb-4 last:border-0 last:pb-0">
                       <div>
-                        <p className="font-bold">{application.candidateProfile?.fullName ?? 'Candidate'}</p>
-                        <p className="mt-1 text-sm text-muted">{application.job?.title ?? 'Role'} • {formatDate(appliedDate(application))}</p>
+                        <p className="font-bold text-ink">{application.candidateProfile?.fullName ?? 'Candidate'}</p>
+                        <p className="mt-0.5 text-xs text-muted">{application.job?.title ?? 'Role'} • {formatDate(appliedDate(application))}</p>
                       </div>
                       <StatusBadge status={application.status} />
                     </div>
@@ -68,17 +102,19 @@ export function RecruiterDashboard() {
 
               <Card>
                 <div className="flex items-center justify-between">
-                  <h2 className="text-xl font-extrabold">Your postings</h2>
-                  <Link className="text-sm font-bold text-brand-700" to="/recruiter/jobs">Manage jobs</Link>
+                  <h2 className="text-xl font-extrabold text-ink">Active Postings</h2>
+                  <Link className="text-xs font-bold text-brand-700 hover:underline" to="/recruiter/jobs">Manage jobs</Link>
                 </div>
                 <div className="mt-4 space-y-4">
                   {jobs.slice(0, 4).map((job) => (
                     <div key={job.id} className="flex items-center justify-between gap-3 border-b border-line pb-4 last:border-0 last:pb-0">
-                      <div>
-                        <p className="font-bold">{job.title}</p>
-                        <p className="mt-1 text-sm text-muted">{job.location} • {job.employmentType}</p>
+                      <div className="min-w-0 flex-1">
+                        <p className="font-bold text-ink truncate">{job.title}</p>
+                        <p className="mt-0.5 text-xs text-muted truncate">{job.location} • {job.employmentType}</p>
                       </div>
-                      <Link to={`/recruiter/jobs/${job.id}/applications`} className="text-sm font-semibold text-brand-700 hover:underline">Applications</Link>
+                      <Link to={`/recruiter/jobs/${job.id}/applications`} className="text-xs font-semibold text-brand-700 hover:underline shrink-0">
+                        View Pipeline
+                      </Link>
                     </div>
                   ))}
                 </div>

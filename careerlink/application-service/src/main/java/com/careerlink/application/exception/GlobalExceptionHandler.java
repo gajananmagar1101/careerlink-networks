@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
     ResponseEntity<ErrorResponse> forbidden(RuntimeException ex, HttpServletRequest request) { return error(HttpStatus.FORBIDDEN, ex.getMessage(), request); }
     @ExceptionHandler({DuplicateApplicationException.class, DuplicateKeyException.class})
     ResponseEntity<ErrorResponse> conflict(RuntimeException ex, HttpServletRequest request) { return error(HttpStatus.CONFLICT, "Candidate has already applied to this job", request); }
-    @ExceptionHandler(JobClosedException.class)
+    @ExceptionHandler({JobClosedException.class, InvalidStatusTransitionException.class, IllegalArgumentException.class, IllegalStateException.class})
     ResponseEntity<ErrorResponse> badRequest(RuntimeException ex, HttpServletRequest request) { return error(HttpStatus.BAD_REQUEST, ex.getMessage(), request); }
     @ExceptionHandler(ServiceUnavailableException.class)
     ResponseEntity<ErrorResponse> unavailable(RuntimeException ex, HttpServletRequest request) { return error(HttpStatus.SERVICE_UNAVAILABLE, ex.getMessage(), request); }

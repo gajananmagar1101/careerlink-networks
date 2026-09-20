@@ -1,0 +1,15 @@
+package com.careerlink.application.model;
+
+public enum NotificationType {
+    APPLICATION_SUBMITTED,
+    APPLICATION_STATUS_CHANGED,
+    INTERVIEW_SCHEDULED,
+    INTERVIEW_RESCHEDULED,
+    INTERVIEW_CANCELLED,
+    OFFER_SENT,
+    OFFER_ACCEPTED,
+    OFFER_DECLINED,
+    JOB_MATCH_FOUND,
+    JOB_EXPIRING,
+    GENERAL
+}

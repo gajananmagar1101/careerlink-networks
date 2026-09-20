@@ -218,11 +218,11 @@ export function LoginPage() {
 
   return (
     <AuthLayout>
-      <h1 className="text-3xl font-extrabold text-ink">Welcome back</h1>
-      <p className="mt-2 text-sm text-muted">Sign in to continue to CareerLink.</p>
+      <h1 className="text-3xl font-extrabold text-ink dark:text-white">Welcome back</h1>
+      <p className="mt-2 text-sm text-muted dark:text-slate-400">Sign in to continue to CareerLink.</p>
 
       {error ? (
-        <p className="mt-4 rounded-md bg-red-50 p-3 text-sm font-medium text-red-700" role="alert">
+        <p className="mt-4 rounded-md bg-red-50 dark:bg-red-950/40 p-3 text-sm font-medium text-red-700 dark:text-red-300" role="alert">
           {error}
         </p>
       ) : null}
@@ -262,13 +262,13 @@ export function LoginPage() {
           <div className="w-full border-t border-line" />
         </div>
         <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-white px-3 font-semibold tracking-wider text-muted">OR</span>
+          <span className="bg-canvas dark:bg-slate-900 px-3 font-semibold tracking-wider text-muted dark:text-slate-400">OR</span>
         </div>
       </div>
 
       {googleError ? (
-        <div className="mb-4 flex items-start gap-2 rounded-md bg-red-50 p-3 text-sm text-red-700" role="alert">
-          <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-600" />
+        <div className="mb-4 flex items-start gap-2 rounded-md bg-red-50 dark:bg-red-950/40 p-3 text-sm text-red-700 dark:text-red-300" role="alert">
+          <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-600 dark:text-red-400" />
           <span>{googleError}</span>
         </div>
       ) : null}
@@ -279,7 +279,7 @@ export function LoginPage() {
           id="google-signin-btn"
           onClick={handleGoogleSignInClick}
           disabled={isGoogleLoading || formState.isSubmitting}
-          className="flex w-full items-center justify-center gap-3 rounded-md border border-line bg-white px-4 py-2.5 text-sm font-semibold text-ink shadow-sm transition hover:bg-surface-subtle hover:border-brand-300 focus:outline-none focus:ring-2 focus:ring-brand-500/20 disabled:cursor-not-allowed disabled:opacity-60"
+          className="flex w-full items-center justify-center gap-3 rounded-md border border-line dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-2.5 text-sm font-semibold text-ink dark:text-slate-100 shadow-sm transition hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-brand-300 dark:hover:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {isGoogleLoading ? (
             <Loader2 className="h-4 w-4 animate-spin text-muted" />
@@ -316,9 +316,9 @@ export function LoginPage() {
         }}
       >
         <div className="space-y-4">
-          <p className="text-sm text-muted">
-            Welcome <strong className="text-ink">{pendingGoogleUser?.name}</strong>! Choose how you want to use
-            CareerLink with <span className="font-semibold text-ink">{pendingGoogleUser?.email}</span>.
+          <p className="text-sm text-muted dark:text-slate-400">
+            Welcome <strong className="text-ink dark:text-white">{pendingGoogleUser?.name}</strong>! Choose how you want to use
+            CareerLink with <span className="font-semibold text-ink dark:text-slate-200">{pendingGoogleUser?.email}</span>.
           </p>
 
           <div className="grid gap-3 pt-1">
@@ -326,14 +326,14 @@ export function LoginPage() {
               type="button"
               disabled={isSubmittingRole}
               onClick={() => handleRoleSelection('CANDIDATE')}
-              className="flex items-start gap-4 rounded-lg border border-line bg-white p-4 text-left transition hover:border-brand-500 hover:shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-500/20 disabled:opacity-60"
+              className="flex items-start gap-4 rounded-lg border border-line dark:border-slate-600 bg-white dark:bg-slate-800 p-4 text-left transition hover:border-brand-500 dark:hover:border-brand-400 hover:shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-500/20 disabled:opacity-60"
             >
               <span className="grid h-10 w-10 shrink-0 place-items-center rounded-md bg-brand-50 text-brand-700">
                 <BriefcaseBusiness className="h-5 w-5" />
               </span>
               <div>
-                <span className="block font-bold text-ink">Job Seeker</span>
-                <span className="mt-0.5 block text-xs text-muted">Find jobs, apply, and grow your career.</span>
+                <span className="block font-bold text-ink dark:text-white">Job Seeker</span>
+                <span className="mt-0.5 block text-xs text-muted dark:text-slate-400">Find jobs, apply, and grow your career.</span>
               </div>
             </button>
 
@@ -341,14 +341,14 @@ export function LoginPage() {
               type="button"
               disabled={isSubmittingRole}
               onClick={() => handleRoleSelection('RECRUITER')}
-              className="flex items-start gap-4 rounded-lg border border-line bg-white p-4 text-left transition hover:border-brand-500 hover:shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-500/20 disabled:opacity-60"
+              className="flex items-start gap-4 rounded-lg border border-line dark:border-slate-600 bg-white dark:bg-slate-800 p-4 text-left transition hover:border-brand-500 dark:hover:border-brand-400 hover:shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-500/20 disabled:opacity-60"
             >
               <span className="grid h-10 w-10 shrink-0 place-items-center rounded-md bg-brand-50 text-brand-700">
                 <Building2 className="h-5 w-5" />
               </span>
               <div>
-                <span className="block font-bold text-ink">Recruiter</span>
-                <span className="mt-0.5 block text-xs text-muted">Hire talent and build your team.</span>
+                <span className="block font-bold text-ink dark:text-white">Recruiter</span>
+                <span className="mt-0.5 block text-xs text-muted dark:text-slate-400">Hire talent and build your team.</span>
               </div>
             </button>
           </div>
