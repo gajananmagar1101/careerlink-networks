@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import { Kanban, Filter, Calendar, Gift, CheckCircle2, ChevronRight } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { useToast } from '../../context/ToastContext';
 import { useRecruiterJobs } from '../../hooks/useJobs';
 import { useJobApplications, useUpdateApplicationStatus } from '../../hooks/useApplications';
 import { InterviewSchedulerModal } from '../../components/interviews/InterviewSchedulerModal';
 import { OfferModal } from '../../components/offers/OfferModal';
+import { ConfirmDialog } from '../../components/ui/Modal';
 import { formatDate } from '../../utils/format';
+import { statusLabel } from '../../utils/applications';
 import type { Application, ApplicationStatus } from '../../types/domain';
 
 const PIPELINE_COLUMNS: {
@@ -43,8 +46,28 @@ export function RecruiterPipelinePage() {
     app: null
   });
 
-  const handleMoveStatus = (app: Application, nextStatus: ApplicationStatus) => {
-    updateStatusMutation.mutate({ applicationId: app.id, status: nextStatus });
+  const { notify } = useToast();
+  const [confirmModal, setConfirmModal] = useState<{
+    app: Application;
+    targetStatus: ApplicationStatus;
+    title: string;
+    description: string;
+    confirmLabel: string;
+    tone: 'danger' | 'primary';
+  } | null>(null);
+
+  const handleConfirmAction = async () => {
+    if (!confirmModal) return;
+    try {
+      await updateStatusMutation.mutateAsync({
+        applicationId: confirmModal.app.id,
+        status: confirmModal.targetStatus
+      });
+      notify(`Candidate moved to ${statusLabel(confirmModal.targetStatus)}.`, 'success');
+      setConfirmModal(null);
+    } catch (err: any) {
+      notify(err?.message || 'Failed to update candidate status', 'error');
+    }
   };
 
   const activeJob = jobs.find(j => j.id === activeJobId);
@@ -172,7 +195,16 @@ export function RecruiterPipelinePage() {
                               {col.id === 'APPLIED' && (
                                 <button
                                   type="button"
-                                  onClick={() => handleMoveStatus(app, 'UNDER_REVIEW')}
+                                  onClick={() =>
+                                    setConfirmModal({
+                                      app,
+                                      targetStatus: 'UNDER_REVIEW',
+                                      title: 'Move to Under Review?',
+                                      description: `Move ${candidateName}'s application to Under Review?`,
+                                      confirmLabel: 'Move to Review',
+                                      tone: 'primary'
+                                    })
+                                  }
                                   className="inline-flex items-center gap-1 rounded-lg bg-blue-50 dark:bg-blue-900/40 px-2 py-1 text-[11px] font-bold text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/70 transition"
                                 >
                                   Review <ChevronRight className="h-3 w-3" />
@@ -182,7 +214,16 @@ export function RecruiterPipelinePage() {
                               {col.id === 'UNDER_REVIEW' && (
                                 <button
                                   type="button"
-                                  onClick={() => handleMoveStatus(app, 'SHORTLISTED')}
+                                  onClick={() =>
+                                    setConfirmModal({
+                                      app,
+                                      targetStatus: 'SHORTLISTED',
+                                      title: 'Shortlist Candidate?',
+                                      description: `Are you sure you want to shortlist ${candidateName} for "${activeJob?.title || 'this position'}"? This will advance the candidate to the Shortlisted stage.`,
+                                      confirmLabel: 'Yes, Shortlist',
+                                      tone: 'primary'
+                                    })
+                                  }
                                   className="inline-flex items-center gap-1 rounded-lg bg-indigo-50 dark:bg-indigo-900/40 px-2 py-1 text-[11px] font-bold text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900/70 transition"
                                 >
                                   Shortlist <ChevronRight className="h-3 w-3" />
@@ -221,7 +262,16 @@ export function RecruiterPipelinePage() {
                               {col.id === 'OFFERED' && (
                                 <button
                                   type="button"
-                                  onClick={() => handleMoveStatus(app, 'HIRED')}
+                                  onClick={() =>
+                                    setConfirmModal({
+                                      app,
+                                      targetStatus: 'HIRED',
+                                      title: 'Confirm Candidate Hire?',
+                                      description: `Are you sure you want to confirm hiring ${candidateName} for "${activeJob?.title || 'this position'}"?`,
+                                      confirmLabel: 'Confirm Hire',
+                                      tone: 'primary'
+                                    })
+                                  }
                                   className="inline-flex items-center gap-1 rounded-lg bg-emerald-50 dark:bg-emerald-900/40 px-2 py-1 text-[11px] font-bold text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/70 transition"
                                 >
                                   <CheckCircle2 className="h-3 w-3" /> Confirm Hire
@@ -231,7 +281,16 @@ export function RecruiterPipelinePage() {
                               {col.id !== 'REJECTED' && col.id !== 'HIRED' && (
                                 <button
                                   type="button"
-                                  onClick={() => handleMoveStatus(app, 'REJECTED')}
+                                  onClick={() =>
+                                    setConfirmModal({
+                                      app,
+                                      targetStatus: 'REJECTED',
+                                      title: 'Reject Application?',
+                                      description: `Are you sure you want to reject ${candidateName}'s application for "${activeJob?.title || 'this position'}"?`,
+                                      confirmLabel: 'Yes, Reject',
+                                      tone: 'danger'
+                                    })
+                                  }
                                   className="ml-auto text-[11px] text-slate-400 dark:text-slate-500 hover:text-rose-600 dark:hover:text-rose-400 transition"
                                 >
                                   Reject
@@ -270,6 +329,17 @@ export function RecruiterPipelinePage() {
           onClose={() => setOfferModal({ isOpen: false, app: null })}
         />
       )}
+
+      {/* Confirmation Dialog */}
+      <ConfirmDialog
+        open={Boolean(confirmModal)}
+        title={confirmModal?.title || ''}
+        description={confirmModal?.description || ''}
+        confirmLabel={confirmModal?.confirmLabel || 'Confirm'}
+        tone={confirmModal?.tone || 'primary'}
+        onCancel={() => setConfirmModal(null)}
+        onConfirm={() => void handleConfirmAction()}
+      />
     </div>
   );
 }
