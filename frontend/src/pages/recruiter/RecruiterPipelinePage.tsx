@@ -200,14 +200,14 @@ export function RecruiterPipelinePage() {
                                       app,
                                       targetStatus: 'UNDER_REVIEW',
                                       title: 'Move to Under Review?',
-                                      description: `Move ${candidateName}'s application to Under Review?`,
-                                      confirmLabel: 'Move to Review',
+                                      description: `Are you sure you want to move ${candidateName}'s application to Under Review for "${activeJob?.title || 'this position'}"?`,
+                                      confirmLabel: 'Move to Under Review',
                                       tone: 'primary'
                                     })
                                   }
                                   className="inline-flex items-center gap-1 rounded-lg bg-blue-50 dark:bg-blue-900/40 px-2 py-1 text-[11px] font-bold text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/70 transition"
                                 >
-                                  Review <ChevronRight className="h-3 w-3" />
+                                  Under Review <ChevronRight className="h-3 w-3" />
                                 </button>
                               )}
 

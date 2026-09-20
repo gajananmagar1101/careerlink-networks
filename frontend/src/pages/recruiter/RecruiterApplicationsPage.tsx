@@ -17,6 +17,7 @@ import { appliedDate, statusLabel } from '../../utils/applications';
 import { formatDate } from '../../utils/format';
 
 const quickActions: Array<{ status: ApplicationStatus; label: string; tone?: 'danger' | 'primary' }> = [
+  { status: 'UNDER_REVIEW', label: 'Under Review' },
   { status: 'SHORTLISTED', label: 'Shortlist' },
   { status: 'INTERVIEW_SCHEDULED', label: 'Schedule Interview' },
   { status: 'HIRED', label: 'Hire' },
