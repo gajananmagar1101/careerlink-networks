@@ -17,10 +17,10 @@ public enum ApplicationStatus {
     private static final Map<ApplicationStatus, Set<ApplicationStatus>> ALLOWED = new EnumMap<>(ApplicationStatus.class);
 
     static {
-        ALLOWED.put(APPLIED,              EnumSet.of(UNDER_REVIEW, REJECTED, WITHDRAWN));
-        ALLOWED.put(UNDER_REVIEW,         EnumSet.of(SHORTLISTED, REJECTED, WITHDRAWN));
-        ALLOWED.put(SHORTLISTED,          EnumSet.of(INTERVIEW_SCHEDULED, REJECTED, WITHDRAWN));
-        ALLOWED.put(INTERVIEW_SCHEDULED,  EnumSet.of(INTERVIEW_COMPLETED, REJECTED, WITHDRAWN));
+        ALLOWED.put(APPLIED,              EnumSet.of(UNDER_REVIEW, SHORTLISTED, REJECTED, WITHDRAWN));
+        ALLOWED.put(UNDER_REVIEW,         EnumSet.of(SHORTLISTED, INTERVIEW_SCHEDULED, REJECTED, WITHDRAWN));
+        ALLOWED.put(SHORTLISTED,          EnumSet.of(INTERVIEW_SCHEDULED, OFFERED, REJECTED, WITHDRAWN));
+        ALLOWED.put(INTERVIEW_SCHEDULED,  EnumSet.of(INTERVIEW_COMPLETED, OFFERED, REJECTED, WITHDRAWN));
         ALLOWED.put(INTERVIEW_COMPLETED,  EnumSet.of(OFFERED, REJECTED, WITHDRAWN));
         ALLOWED.put(OFFERED,              EnumSet.of(HIRED, REJECTED, WITHDRAWN));
         ALLOWED.put(HIRED,                EnumSet.noneOf(ApplicationStatus.class));

@@ -52,4 +52,26 @@ class ApplicationServiceTest {
         when(jobs.getJob("j1")).thenReturn(new RemoteApiResponse<>(true, "ok", new JobDto("j1", "r2", "OPEN", null, "SWE", "Acme")));
         assertThatThrownBy(() -> service.byJob("r1", "RECRUITER", "j1")).isInstanceOf(UnauthorizedException.class);
     }
+
+    @Test
+    void recruiterCanTransitionUnderReviewToInterviewScheduled() {
+        ApplicationDocument app = ApplicationDocument.builder().id("a1").jobId("j1").candidateId("c1").status(com.careerlink.application.model.ApplicationStatus.UNDER_REVIEW).build();
+        when(repo.findById("a1")).thenReturn(Optional.of(app));
+        when(jobs.getJob("j1")).thenReturn(new RemoteApiResponse<>(true, "ok", new JobDto("j1", "r1", "OPEN", null, "SWE", "Acme")));
+        when(repo.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+
+        ApplicationDocument updated = service.updateStatus("r1", "RECRUITER", "a1", com.careerlink.application.model.ApplicationStatus.INTERVIEW_SCHEDULED);
+        assertThat(updated.getStatus()).isEqualTo(com.careerlink.application.model.ApplicationStatus.INTERVIEW_SCHEDULED);
+    }
+
+    @Test
+    void recruiterCanTransitionInterviewScheduledToOffered() {
+        ApplicationDocument app = ApplicationDocument.builder().id("a1").jobId("j1").candidateId("c1").status(com.careerlink.application.model.ApplicationStatus.INTERVIEW_SCHEDULED).build();
+        when(repo.findById("a1")).thenReturn(Optional.of(app));
+        when(jobs.getJob("j1")).thenReturn(new RemoteApiResponse<>(true, "ok", new JobDto("j1", "r1", "OPEN", null, "SWE", "Acme")));
+        when(repo.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+
+        ApplicationDocument updated = service.updateStatus("r1", "RECRUITER", "a1", com.careerlink.application.model.ApplicationStatus.OFFERED);
+        assertThat(updated.getStatus()).isEqualTo(com.careerlink.application.model.ApplicationStatus.OFFERED);
+    }
 }

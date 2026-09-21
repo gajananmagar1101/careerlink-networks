@@ -15,6 +15,11 @@ public class GlobalExceptionHandler {
         return error(HttpStatus.CONFLICT, ex.getMessage(), request);
     }
 
+    @ExceptionHandler(ResourceNotFoundException.class)
+    ResponseEntity<ErrorResponse> notFound(RuntimeException ex, HttpServletRequest request) {
+        return error(HttpStatus.NOT_FOUND, ex.getMessage(), request);
+    }
+
     @ExceptionHandler(UnauthorizedException.class)
     ResponseEntity<ErrorResponse> unauthorized(RuntimeException ex, HttpServletRequest request) {
         return error(HttpStatus.UNAUTHORIZED, ex.getMessage(), request);

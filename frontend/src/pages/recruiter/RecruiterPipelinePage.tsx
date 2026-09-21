@@ -9,7 +9,7 @@ import { OfferModal } from '../../components/offers/OfferModal';
 import { ConfirmDialog } from '../../components/ui/Modal';
 import { formatDate } from '../../utils/format';
 import { statusLabel } from '../../utils/applications';
-import type { Application, ApplicationStatus } from '../../types/domain';
+import type { ApiError, Application, ApplicationStatus } from '../../types/domain';
 
 const PIPELINE_COLUMNS: {
   id: ApplicationStatus;
@@ -65,8 +65,8 @@ export function RecruiterPipelinePage() {
       });
       notify(`Candidate moved to ${statusLabel(confirmModal.targetStatus)}.`, 'success');
       setConfirmModal(null);
-    } catch (err: any) {
-      notify(err?.message || 'Failed to update candidate status', 'error');
+    } catch (err: unknown) {
+      notify((err as ApiError)?.message || 'Failed to update candidate status', 'error');
     }
   };
 

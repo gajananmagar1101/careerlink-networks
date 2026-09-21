@@ -153,4 +153,23 @@ class AuthServiceTest {
         assertThatThrownBy(() -> service.googleLogin(new GoogleAuthRequest("invalid-token", null)))
                 .isInstanceOf(UnauthorizedException.class);
     }
+
+    @Test
+    void getUserByIdExistingUserReturnsUserResponse() {
+        UserDocument user = UserDocument.builder().id("u1").email("user@example.com").name("User").role(Role.CANDIDATE).build();
+        when(users.findById("u1")).thenReturn(Optional.of(user));
+
+        UserResponse response = service.getUserById("u1");
+        assertThat(response.id()).isEqualTo("u1");
+        assertThat(response.email()).isEqualTo("user@example.com");
+    }
+
+    @Test
+    void getUserByIdMissingUserThrowsResourceNotFoundException() {
+        when(users.findById("nonexistent")).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> service.getUserById("nonexistent"))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessage("User not found");
+    }
 }

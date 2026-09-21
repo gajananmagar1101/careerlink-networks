@@ -145,7 +145,7 @@ public class AuthService {
 
     public UserResponse getUserById(String id) {
         return users.findById(id).map(this::toResponse)
-                .orElseThrow(() -> new UnauthorizedException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
     private UserResponse toResponse(UserDocument user) {

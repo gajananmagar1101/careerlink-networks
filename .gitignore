@@ -10,6 +10,8 @@ client_secret*.json
 **/dist/
 **/dist-ssr/
 **/*.tsbuildinfo
+frontend/tailwind.config.js
+frontend/tailwind.config.d.ts
 
 # Java & Backend
 **/target/

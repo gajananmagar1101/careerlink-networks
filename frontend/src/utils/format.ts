@@ -14,12 +14,14 @@ export function formatSalary(min?: number, max?: number) {
 
 export function formatDate(value?: string) {
   if (!value) return 'Not available';
-  return new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(value));
+  const date = new Date(value);
+  if (isNaN(date.getTime())) return 'Not available';
+  return new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }).format(date);
 }
 
 export function employmentLabel(value?: EmploymentType | '') {
   if (!value) return 'Any type';
-  return value.replace('_', ' ').toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
+  return value.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
 export function initials(name?: string) {

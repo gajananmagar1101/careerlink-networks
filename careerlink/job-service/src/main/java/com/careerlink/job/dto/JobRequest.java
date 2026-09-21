@@ -17,6 +17,6 @@ public record JobRequest(
         @NotEmpty List<@NotBlank String> skills,
         @NotBlank String category,
         JobStatus status,
-        @Future LocalDate applicationDeadline,
+        LocalDate applicationDeadline,
         @NotBlank String companyName
 ) {}

@@ -45,6 +45,11 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
         String path = exchange.getRequest().getURI().getPath();
         String method = exchange.getRequest().getMethod().name();
 
+        // Allow CORS preflight requests
+        if ("OPTIONS".equalsIgnoreCase(method)) {
+            return chain.filter(exchange);
+        }
+
         // Always strip client-supplied trust headers to prevent header injection.
         ServerHttpRequest sanitized = exchange.getRequest().mutate()
                 .headers(headers -> {
@@ -99,7 +104,10 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
      * unless it is a protected sub-resource (e.g. saved jobs, match score).
      */
     private boolean isPublicGet(String path) {
-        if (path.startsWith("/api/jobs/saved") || path.endsWith("/match") || path.startsWith("/api/jobs/recruiter")) {
+        if (path.startsWith("/actuator")) {
+            return true;
+        }
+        if (path.startsWith("/api/jobs/saved") || path.contains("/match") || path.startsWith("/api/jobs/recruiter")) {
             return false;
         }
         for (String prefix : PUBLIC_GET_PREFIXES) {
