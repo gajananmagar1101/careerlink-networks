@@ -76,22 +76,24 @@ export function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-30 border-b border-slate-800 bg-black/95 backdrop-blur transition-colors">
+    <header className="sticky top-0 z-30 border-b border-line bg-white/95 dark:border-slate-800 dark:bg-slate-900/95 backdrop-blur transition-colors">
       <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-50 focus:rounded-md focus:bg-white dark:focus:bg-slate-800 focus:px-3 focus:py-2">
         Skip to content
       </a>
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
         <Link to={isAuthenticated ? dashboardPath : '/'} className="flex items-center transition hover:opacity-90" aria-label="HireLink">
-          <Logo height={32} />
+          <span className="flex items-center rounded-lg bg-black px-2 py-1">
+            <Logo height={32} />
+          </span>
         </Link>
         <div className="hidden items-center gap-7 md:flex">
           {links.map((link) =>
             'hash' in link && link.hash ? (
-              <button key={link.to} type="button" className="text-sm font-semibold text-slate-400 transition hover:text-white" onClick={() => goHash('#recruiters')}>
+              <button key={link.to} type="button" className="text-sm font-semibold text-muted dark:text-slate-400 transition hover:text-ink dark:hover:text-white" onClick={() => goHash('#recruiters')}>
                 {link.label}
               </button>
             ) : (
-              <NavLink key={link.to} to={link.to} className={({ isActive }) => `text-sm font-semibold transition hover:text-white ${isActive ? 'text-white font-bold' : 'text-slate-400'}`}>
+              <NavLink key={link.to} to={link.to} className={({ isActive }) => `text-sm font-semibold transition hover:text-ink dark:hover:text-white ${isActive ? 'text-ink dark:text-white font-bold' : 'text-muted dark:text-slate-400'}`}>
                 {link.label}
               </NavLink>
             )
@@ -105,13 +107,13 @@ export function Navbar() {
               <button
                 type="button"
                 onClick={() => setUserMenuOpen((prev) => !prev)}
-                className="inline-flex items-center gap-2 rounded-lg p-1.5 pr-2.5 text-sm font-semibold text-white hover:bg-slate-800 transition focus:outline-none focus:ring-2 focus:ring-brand-500/20"
+                className="inline-flex items-center gap-2 rounded-lg p-1.5 pr-2.5 text-sm font-semibold text-ink dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition focus:outline-none focus:ring-2 focus:ring-brand-500/20"
                 aria-expanded={userMenuOpen}
                 aria-haspopup="true"
                 aria-label="User menu"
               >
                 <Avatar name={user.name} />
-                <span className="max-w-[140px] truncate text-white font-bold">{user.name}</span>
+                <span className="max-w-[140px] truncate text-slate-800 dark:text-slate-200 font-bold">{user.name}</span>
                 <ChevronDown className={`h-4 w-4 text-slate-400 transition-transform duration-200 ${userMenuOpen ? 'rotate-180 text-brand-600' : ''}`} />
               </button>
 
@@ -174,7 +176,7 @@ export function Navbar() {
             </div>
           ) : (
             <>
-              <Link to="/login" className="text-sm font-semibold text-slate-300 hover:text-white transition">
+              <Link to="/login" className="text-sm font-semibold text-ink dark:text-slate-200 hover:text-brand-600 dark:hover:text-brand-400">
                 Sign In
               </Link>
               <Link to="/register">
@@ -183,7 +185,7 @@ export function Navbar() {
             </>
           )}
         </div>
-        <button className="rounded-md p-2 text-slate-300 hover:bg-slate-800 md:hidden" onClick={() => setOpen((value) => !value)} aria-expanded={open} aria-label="Toggle navigation">
+        <button className="rounded-md p-2 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 md:hidden" onClick={() => setOpen((value) => !value)} aria-expanded={open} aria-label="Toggle navigation">
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </nav>
