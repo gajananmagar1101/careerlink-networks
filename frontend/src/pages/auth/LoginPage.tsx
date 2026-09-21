@@ -58,12 +58,13 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>;
 
-const DEFAULT_GOOGLE_CLIENT_ID = '554655172126-g4lnhap8nf22289ikh6g8dqp0nqfmcir.apps.googleusercontent.com';
+const DEFAULT_GOOGLE_CLIENT_ID = '843447912731-4pdui4qk4niimt3tsf05hda0j9nsavro.apps.googleusercontent.com';
 
 export function LoginPage() {
-  const googleClientId = (
-    import.meta.env.VITE_GOOGLE_CLIENT_ID || DEFAULT_GOOGLE_CLIENT_ID
-  ).trim();
+  const rawClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID?.trim();
+  const googleClientId = (!rawClientId || rawClientId.includes('your-google-oauth-client-id'))
+    ? DEFAULT_GOOGLE_CLIENT_ID
+    : rawClientId;
   const { login, loginWithGoogle, user, dashboardPath } = useAuth();
   const { notify } = useToast();
   const navigate = useNavigate();
