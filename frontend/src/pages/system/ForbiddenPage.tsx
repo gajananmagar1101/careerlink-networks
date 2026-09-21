@@ -7,7 +7,7 @@ export function ForbiddenPage() {
       <div>
         <p className="text-sm font-bold text-brand-700">403</p>
         <h1 className="mt-2 text-4xl font-extrabold">This workspace is not available for your role.</h1>
-        <p className="mx-auto mt-3 max-w-md text-muted">CareerLink keeps candidate and recruiter workflows separate so each experience stays focused.</p>
+        <p className="mx-auto mt-3 max-w-md text-muted">HireLink keeps candidate and recruiter workflows separate so each experience stays focused.</p>
         <Link to="/">
           <Button className="mt-6">Go home</Button>
         </Link>

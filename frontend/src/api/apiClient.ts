@@ -42,7 +42,7 @@ export function toFriendlyError(error: unknown) {
   const axiosError = error as AxiosError<{ message?: string; error?: string }>;
   const status = axiosError.response?.status;
   const backendMessage = axiosError.response?.data?.message?.trim();
-  if (!status) return 'CareerLink cannot reach the API Gateway. Confirm the backend is running.';
+  if (!status) return 'HireLink cannot reach the API Gateway. Confirm the backend is running.';
   if (status === 400) return backendMessage || 'Please check the highlighted details and try again.';
   if (status === 401) return backendMessage || 'Your session has expired. Please sign in again.';
   if (status === 403) return backendMessage || 'You do not have permission to perform this action.';

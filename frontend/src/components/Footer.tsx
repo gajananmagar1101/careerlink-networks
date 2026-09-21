@@ -39,7 +39,7 @@ export function Footer() {
         </div>
       </div>
       <div className="border-t border-line dark:border-slate-800">
-        <p className="mx-auto max-w-7xl px-4 py-4 text-xs text-muted dark:text-slate-400 sm:px-6 lg:px-8">© {new Date().getFullYear()} CareerLink Networks. All rights reserved.</p>
+        <p className="mx-auto max-w-7xl px-4 py-4 text-xs text-muted dark:text-slate-400 sm:px-6 lg:px-8">© {new Date().getFullYear()} HireLink. All rights reserved.</p>
       </div>
     </footer>
   );

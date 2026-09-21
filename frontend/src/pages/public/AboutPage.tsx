@@ -4,10 +4,10 @@ import { Button } from '../../components/ui/Button';
 export function AboutPage() {
   return (
     <main className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
-      <p className="text-sm font-bold text-brand-700">About CareerLink</p>
+      <p className="text-sm font-bold text-brand-700">About HireLink</p>
       <h1 className="mt-2 text-4xl font-extrabold text-ink">A hiring network with a clear paper trail.</h1>
       <p className="mt-4 text-lg leading-8 text-muted">
-        CareerLink Networks is an enterprise talent acquisition portal. Candidates search jobs, maintain a professional profile, apply, and track status. Recruiters post roles, review applicants, and move applications through a defined pipeline.
+        HireLink is an enterprise talent acquisition portal. Candidates search jobs, maintain a professional profile, apply, and track status. Recruiters post roles, review applicants, and move applications through a defined pipeline.
       </p>
       <div className="mt-10 space-y-8 text-sm leading-7 text-muted">
         <section>

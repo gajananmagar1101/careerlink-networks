@@ -9,7 +9,7 @@ export function NotFoundPage() {
         <h1 className="mt-2 text-4xl font-extrabold">Page not found</h1>
         <p className="mx-auto mt-3 max-w-md text-muted">The page may have moved, or the link points to a workspace you no longer need.</p>
         <Link to="/">
-          <Button className="mt-6">Return to CareerLink</Button>
+          <Button className="mt-6">Return to HireLink</Button>
         </Link>
       </div>
     </main>

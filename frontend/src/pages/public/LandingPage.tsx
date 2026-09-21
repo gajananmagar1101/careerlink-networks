@@ -56,7 +56,7 @@ export function LandingPage() {
           <div className="mx-auto grid max-w-7xl items-center gap-8 px-4 pt-2 pb-6 sm:px-6 sm:pt-3 sm:pb-8 lg:grid-cols-[1.1fr_.9fr] lg:gap-12 lg:px-8 lg:pt-4 lg:pb-8">
             <div>
               <p className="inline-flex rounded-full border border-brand-100 bg-brand-50 px-3 py-1 text-sm font-bold text-brand-700">
-                CareerLink Networks
+                HireLink
               </p>
               <h1 className="mt-4 sm:mt-5 max-w-3xl text-4xl font-extrabold leading-[1.08] tracking-tight text-ink sm:text-6xl">
                 Find work that moves your career forward.

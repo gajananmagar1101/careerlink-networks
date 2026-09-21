@@ -46,7 +46,7 @@ export function PublicJobsPage() {
   return (
     <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       <h1 className="text-3xl font-extrabold">Find your next role</h1>
-      <p className="mt-2 text-muted">Search live openings from CareerLink hiring teams.</p>
+      <p className="mt-2 text-muted">Search live openings from HireLink hiring teams.</p>
       <div className="mt-6">
         <JobSearchForm
           values={{ keyword, location, employmentType, category, minExperience, minSalary, sort }}

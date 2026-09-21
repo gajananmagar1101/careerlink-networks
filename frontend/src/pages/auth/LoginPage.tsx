@@ -58,13 +58,12 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>;
 
-const DEFAULT_GOOGLE_CLIENT_ID = '843447912731-4pdui4qk4niimt3tsf05hda0j9nsavro.apps.googleusercontent.com';
+const DEFAULT_GOOGLE_CLIENT_ID = '554655172126-g4lnhap8nf22289ikh6g8dqp0nqfmcir.apps.googleusercontent.com';
 
 export function LoginPage() {
-  const rawClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID?.trim();
-  const googleClientId = (!rawClientId || rawClientId.includes('your-google-oauth-client-id'))
-    ? DEFAULT_GOOGLE_CLIENT_ID
-    : rawClientId;
+  const googleClientId = (
+    import.meta.env.VITE_GOOGLE_CLIENT_ID || DEFAULT_GOOGLE_CLIENT_ID
+  ).trim();
   const { login, loginWithGoogle, user, dashboardPath } = useAuth();
   const { notify } = useToast();
   const navigate = useNavigate();
@@ -220,7 +219,7 @@ export function LoginPage() {
   return (
     <AuthLayout>
       <h1 className="text-3xl font-extrabold text-ink dark:text-white">Welcome back</h1>
-      <p className="mt-2 text-sm text-muted dark:text-slate-400">Sign in to continue to CareerLink.</p>
+      <p className="mt-2 text-sm text-muted dark:text-slate-400">Sign in to continue to HireLink.</p>
 
       {error ? (
         <p className="mt-4 rounded-md bg-red-50 dark:bg-red-950/40 p-3 text-sm font-medium text-red-700 dark:text-red-300" role="alert">
@@ -319,7 +318,7 @@ export function LoginPage() {
         <div className="space-y-4">
           <p className="text-sm text-muted dark:text-slate-400">
             Welcome <strong className="text-ink dark:text-white">{pendingGoogleUser?.name}</strong>! Choose how you want to use
-            CareerLink with <span className="font-semibold text-ink dark:text-slate-200">{pendingGoogleUser?.email}</span>.
+            HireLink with <span className="font-semibold text-ink dark:text-slate-200">{pendingGoogleUser?.email}</span>.
           </p>
 
           <div className="grid gap-3 pt-1">
@@ -356,7 +355,7 @@ export function LoginPage() {
 
           {isSubmittingRole ? (
             <p className="flex items-center justify-center gap-2 pt-2 text-xs font-semibold text-brand-700">
-              <Loader2 className="h-3.5 w-3.5 animate-spin" /> Setting up your CareerLink account…
+              <Loader2 className="h-3.5 w-3.5 animate-spin" /> Setting up your HireLink account…
             </p>
           ) : null}
         </div>

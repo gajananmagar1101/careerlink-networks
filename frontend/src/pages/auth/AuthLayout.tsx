@@ -17,7 +17,7 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
         <div className="py-12">
           <h2 className="max-w-md text-4xl font-extrabold leading-tight">Your next opportunity starts here.</h2>
           <p className="mt-4 max-w-md text-sm leading-7 text-slate-300">
-            CareerLink keeps your job search — or your hiring pipeline — organized, visible, and moving forward.
+            HireLink keeps your job search — or your hiring pipeline — organized, visible, and moving forward.
           </p>
           <ul className="mt-8 space-y-3">
             {highlights.map((item) => (
@@ -28,7 +28,7 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
             ))}
           </ul>
         </div>
-        <p className="text-xs text-slate-400">© {new Date().getFullYear()} CareerLink Networks</p>
+        <p className="text-xs text-slate-400">© {new Date().getFullYear()} HireLink</p>
       </section>
       <section className="flex items-center justify-center bg-canvas dark:bg-slate-900 px-4 py-12 sm:px-6 transition-colors">
         <div className="w-full max-w-md">{children}</div>

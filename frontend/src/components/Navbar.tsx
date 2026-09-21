@@ -81,7 +81,7 @@ export function Navbar() {
         Skip to content
       </a>
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
-        <Link to={isAuthenticated ? dashboardPath : '/'} className="flex items-center transition hover:opacity-90" aria-label="CareerLink">
+        <Link to={isAuthenticated ? dashboardPath : '/'} className="flex items-center transition hover:opacity-90" aria-label="HireLink">
           <Logo height={32} />
         </Link>
         <div className="hidden items-center gap-7 md:flex">

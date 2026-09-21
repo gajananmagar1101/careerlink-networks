@@ -12,7 +12,7 @@ export function CompaniesPage() {
   return (
     <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <p className="text-sm font-bold text-brand-700">Companies</p>
-      <h1 className="mt-2 text-3xl font-extrabold">Teams hiring on CareerLink</h1>
+      <h1 className="mt-2 text-3xl font-extrabold">Teams hiring on HireLink</h1>
       <p className="mt-2 max-w-2xl text-muted">Company names come from live job postings. There is no separate company directory API.</p>
       <div className="mt-8">
         {query.isLoading ? (

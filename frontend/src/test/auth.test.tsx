@@ -41,8 +41,8 @@ describe('Auth Pages', () => {
   describe('RegisterPage', () => {
     it('renders the registration heading with role selection', async () => {
       renderApp('/register');
-      expect(await screen.findByRole('heading', { name: /create your careerlink account/i })).toBeInTheDocument();
-      expect(screen.getByText(/tell us how you plan to use careerlink/i)).toBeInTheDocument();
+      expect(await screen.findByRole('heading', { name: /create your hirelink account/i })).toBeInTheDocument();
+      expect(screen.getByText(/tell us how you plan to use hirelink/i)).toBeInTheDocument();
     });
 
     it('renders role selection', async () => {

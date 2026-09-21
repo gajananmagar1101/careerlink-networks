@@ -87,23 +87,23 @@ export function LandingSections({ featured }: { featured: { isLoading: boolean; 
         <section id="companies" className="scroll-mt-20 border-b border-line pt-6 pb-10 sm:pt-8 sm:pb-12">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <p className="text-center text-sm font-bold text-brand-700">Hiring across industries</p>
-          <h2 className="mt-2 text-center text-2xl font-extrabold text-ink">Companies posting on CareerLink</h2>
+          <h2 className="mt-2 text-center text-2xl font-extrabold text-ink">Companies posting on HireLink</h2>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-lg font-semibold text-ink/80">
             {(companies.length ? companies : ['Technology', 'Healthcare', 'Finance', 'Education', 'Manufacturing']).map((name) => (
               <span key={name}>{name}</span>
             ))}
           </div>
           <p className="mt-5 text-center text-xs text-muted">
-            {companies.length ? 'Names come from current job postings, not paid partnerships.' : 'Industry labels describe the kinds of teams CareerLink is built for. Company names appear from live postings after you sign in.'}
+            {companies.length ? 'Names come from current job postings, not paid partnerships.' : 'Industry labels describe the kinds of teams HireLink is built for. Company names appear from live postings after you sign in.'}
           </p>
         </div>
       </section>
 
       <section id="about" className="scroll-mt-20 mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="max-w-2xl">
-          <p className="text-sm font-bold text-brand-700">Why CareerLink</p>
+          <p className="text-sm font-bold text-brand-700">Why HireLink</p>
           <h2 className="mt-2 text-3xl font-extrabold text-ink">Hiring should feel organized, not noisy.</h2>
-          <p className="mt-3 text-muted">CareerLink is a talent acquisition portal: one place to publish roles, apply with a complete profile, and keep application status visible for both sides of the table.</p>
+          <p className="mt-3 text-muted">HireLink is a talent acquisition portal: one place to publish roles, apply with a complete profile, and keep application status visible for both sides of the table.</p>
         </div>
         <div className="mt-10 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {[
@@ -187,7 +187,7 @@ export function LandingSections({ featured }: { featured: { isLoading: boolean; 
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <p className="text-sm font-bold text-brand-700">How CareerLink works</p>
+        <p className="text-sm font-bold text-brand-700">How HireLink works</p>
         <h2 className="mt-2 text-3xl font-extrabold text-ink">A straightforward hiring path</h2>
         <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {STEPS.map(({ icon: Icon, title, text }, index) => (
@@ -226,14 +226,14 @@ export function LandingSections({ featured }: { featured: { isLoading: boolean; 
         <div className="mx-auto max-w-3xl px-4 text-center">
           <CheckCircle2 className="mx-auto h-8 w-8 text-brand-700" />
           <h2 className="mt-4 text-3xl font-extrabold text-ink">Built for serious hiring conversations</h2>
-          <p className="mt-3 text-muted">CareerLink is a working product over real auth, profile, job, and application services — not a decorative dashboard template.</p>
+          <p className="mt-3 text-muted">HireLink is a working product over real auth, profile, job, and application services — not a decorative dashboard template.</p>
         </div>
       </section>
 
       <section className="border-t border-line bg-white py-16 text-center">
         <div className="mx-auto max-w-2xl px-4">
           <h2 className="text-3xl font-extrabold text-ink">Ready to take the next step?</h2>
-          <p className="mt-3 text-muted">Create a CareerLink account and start as a candidate or a recruiter.</p>
+          <p className="mt-3 text-muted">Create a HireLink account and start as a candidate or a recruiter.</p>
           <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
             <Link to="/register" className="inline-flex items-center justify-center rounded-md bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700">Get Started</Link>
             <Link to="/jobs" className="inline-flex items-center justify-center rounded-md border border-line bg-white px-5 py-2.5 text-sm font-semibold text-ink transition hover:bg-canvas">Explore Jobs</Link>

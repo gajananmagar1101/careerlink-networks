@@ -9,7 +9,7 @@ interface LogoProps {
 }
 
 /**
- * CareerLink official brand logo component.
+ * HireLink official brand logo component.
  * - `auto`: Automatically selects dark/light variant based on current ThemeContext (default).
  * - `dark`: Standard logo (dark text + green) for white/light backgrounds.
  * - `light`: White-text version (white text + green) for dark backgrounds.
@@ -19,7 +19,7 @@ export const Logo: React.FC<LogoProps> = ({
   className = '',
   variant = 'auto',
   height = 34,
-  alt = 'CareerLink'
+  alt = 'HireLink'
 }) => {
   let effectiveVariant = variant;
   try {

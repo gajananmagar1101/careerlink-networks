@@ -32,7 +32,7 @@ const schema = z.object({
   email: z.string().email('Please enter a valid email.'),
   password: z.string().min(8, 'Password must be at least 8 characters.'),
   confirmPassword: z.string(),
-  terms: z.literal(true, { errorMap: () => ({ message: 'Please confirm you will use CareerLink professionally.' }) })
+  terms: z.literal(true, { errorMap: () => ({ message: 'Please confirm you will use HireLink professionally.' }) })
 }).refine((values) => values.password === values.confirmPassword, {
   message: 'Passwords do not match.',
   path: ['confirmPassword']
@@ -69,11 +69,11 @@ export function RegisterPage() {
 
   return (
     <AuthLayout>
-      <h1 className="text-3xl font-extrabold text-ink dark:text-white">Create your CareerLink account</h1>
+      <h1 className="text-3xl font-extrabold text-ink dark:text-white">Create your HireLink account</h1>
 
       {!role ? (
         <>
-          <p className="mt-2 text-sm text-muted">First, tell us how you plan to use CareerLink.</p>
+          <p className="mt-2 text-sm text-muted">First, tell us how you plan to use HireLink.</p>
           <div className="mt-6 grid gap-4">
             {(Object.keys(roleMeta) as Role[]).map((key) => {
               const { title, description, icon: Icon } = roleMeta[key];
@@ -122,7 +122,7 @@ export function RegisterPage() {
             </div>
             <label className="flex items-start gap-2 text-sm text-muted">
               <input type="checkbox" className="mt-1 rounded border-line" {...register('terms')} />
-              <span>I will use CareerLink for professional hiring and job search.</span>
+              <span>I will use HireLink for professional hiring and job search.</span>
             </label>
             {formState.errors.terms ? <p className="field-error">{formState.errors.terms.message}</p> : null}
             <Button className="w-full" disabled={formState.isSubmitting}>
